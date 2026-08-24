@@ -1,0 +1,12 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Certificacion Funcional - Framework Selenium Java" verbose="1">
+    <listeners>
+        <listener class-name="com.botengine.framework.utils.ScreenshotListener"/>
+    </listeners>
+
+    <test name="Pruebas funcionales base">
+        <classes>
+            <class name="com.botengine.framework.tests.LoginTest"/>
+        </classes>
+    </test>
+</suite>

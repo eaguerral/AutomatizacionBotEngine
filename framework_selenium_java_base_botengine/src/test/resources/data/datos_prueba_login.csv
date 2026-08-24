@@ -1,0 +1,3 @@
+escenario,usuario,password,resultado_esperado
+Login válido,usuario_demo,password_demo,Acceso exitoso
+Login inválido,usuario_demo,password_incorrecto,Mensaje de error

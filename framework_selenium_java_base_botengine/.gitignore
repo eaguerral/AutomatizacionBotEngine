@@ -1,0 +1,6 @@
+target/
+.idea/
+*.iml
+.DS_Store
+src/test/resources/evidencias/*.png
+src/test/resources/reportes/testng/
