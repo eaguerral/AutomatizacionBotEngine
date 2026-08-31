@@ -1,2 +1,0 @@
-id_registro,aplicacion_web,modulo_funcional,escenario_prueba,script_automatizado,fecha_ejecucion,resultado,evidencia,indicador_observado,observaciones
-1,Aplicación web base,Autenticación,Validar inicio de sesión,LoginTest.validarLoginBase,pendiente,pendiente,pendiente,Cobertura inicial,Registro preparado para primera ejecución
