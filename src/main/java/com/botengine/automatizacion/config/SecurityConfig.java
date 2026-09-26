@@ -1,36 +1,49 @@
 package com.botengine.automatizacion.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.botengine.automatizacion.model.Usuario;
+import com.botengine.automatizacion.repository.UsuarioRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http) throws Exception {
+
         http
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
+                    "/login",
                     "/css/**",
                     "/js/**",
                     "/images/**",
                     "/favicon.ico"
                 ).permitAll()
+
+                .requestMatchers(
+                    "/usuarios/**"
+                ).hasRole("ADMIN")
+
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
+                .loginPage("/login")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/", true)
+                .failureUrl("/login?error")
                 .permitAll()
             )
             .logout(logout -> logout
+                .logoutSuccessUrl("/login?logout")
                 .permitAll()
             );
 
@@ -44,16 +57,24 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(
-            @Value("${botengine.admin.username}") String username,
-            @Value("${botengine.admin.password}") String password,
-            PasswordEncoder passwordEncoder) {
+            UsuarioRepository usuarioRepository) {
 
-        UserDetails usuario = User.builder()
-            .username(username)
-            .password(passwordEncoder.encode(password))
-            .roles("ADMIN")
-            .build();
+        return username -> {
 
-        return new InMemoryUserDetailsManager(usuario);
+            Usuario usuario = usuarioRepository
+                    .findByUsername(username)
+                    .orElseThrow(() ->
+                            new UsernameNotFoundException(
+                                    "Usuario no encontrado."
+                            )
+                    );
+
+            return User.builder()
+                    .username(usuario.getUsername())
+                    .password(usuario.getPassword())
+                    .roles(usuario.getRol().getNombre())
+                    .disabled(!usuario.isActivo())
+                    .build();
+        };
     }
 }

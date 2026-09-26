@@ -8,6 +8,59 @@ $root = Split-Path -Parent $PSScriptRoot
 Set-Location $root
 
 Write-Host ""
+Write-Host "[0/6] Cargando variables locales..."
+
+$envFile = Join-Path $root ".env"
+
+if (-not (Test-Path $envFile)) {
+    Write-Host "ERROR: No se encontro el archivo .env."
+    Write-Host "Copie .env.example como .env y configure los valores locales."
+    exit 1
+}
+
+Get-Content $envFile | ForEach-Object {
+
+    $linea = $_.Trim()
+
+    if (
+        -not [string]::IsNullOrWhiteSpace($linea) -and
+        -not $linea.StartsWith("#") -and
+        $linea.Contains("=")
+    ) {
+
+        $partes = $linea.Split("=", 2)
+
+        $nombre = $partes[0].Trim()
+        $valor = $partes[1].Trim()
+
+        Set-Item -Path "Env:$nombre" -Value $valor
+    }
+}
+
+$variablesRequeridas = @(
+    "BOTENGINE_DB_NAME",
+    "BOTENGINE_DB_USER",
+    "BOTENGINE_DB_PASSWORD",
+    "BOTENGINE_DB_PORT"
+)
+
+foreach ($variable in $variablesRequeridas) {
+
+    $valor = [Environment]::GetEnvironmentVariable($variable)
+
+    if ([string]::IsNullOrWhiteSpace($valor)) {
+        Write-Host "ERROR: Falta la variable $variable en .env."
+        exit 1
+    }
+}
+
+Write-Host "Variables locales cargadas."
+Write-Host "Base de datos: $env:BOTENGINE_DB_NAME"
+Write-Host "Usuario BD: $env:BOTENGINE_DB_USER"
+Write-Host "Puerto BD: $env:BOTENGINE_DB_PORT"
+Write-Host "Password BD: CARGADA"
+
+Write-Host ""
 Write-Host "[1/6] Verificando Java..."
 if (-not (Get-Command java -ErrorAction SilentlyContinue)) {
     Write-Host "ERROR: Java no esta instalado o no esta en PATH."

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Automatizaciones | Bot Engine</title>
+    <title>Nuevo usuario | Bot Engine</title>
     <link rel="stylesheet" href="/css/botengine.css">
     <script src="/js/theme.js"></script>
 </head>
@@ -176,16 +177,16 @@
             <div class="hero-text">
 
                 <span class="brand-badge">
-                    Catalogo tecnico
+                    Administracion
                 </span>
 
                 <h1>
-                    Automatizaciones
+                    Nuevo usuario
                 </h1>
 
                 <p class="lead">
-                    Seleccione una automatizacion disponible para iniciar
-                    su ejecucion desde el portal.
+                    Registro de una nueva cuenta con acceso
+                    controlado por rol.
                 </p>
 
             </div>
@@ -200,32 +201,114 @@
 
         <div class="container">
 
-            <div class="cards">
+            <div class="user-form-panel">
 
-                <article class="card">
+                <div th:if="${error != null}"
+                     class="form-error"
+                     th:text="${error}">
+                    Error
+                </div>
 
-                    <h5>LoginTest</h5>
+                <form
+                    th:action="@{/usuarios/nuevo}"
+                    th:object="${usuarioForm}"
+                    method="post"
+                    autocomplete="off">
 
-                    <p>
-                        Escenario funcional base para validar la integracion
-                        entre Spring Boot, TestNG y Selenium WebDriver.
-                    </p>
+                    <div class="form-grid">
 
-                    <span class="brand-badge">
-                        Selenium + TestNG
-                    </span>
+                        <div class="form-field">
+                            <label>Nombre completo</label>
 
-                    <form
-                        th:action="@{/automatizaciones/login-test/ejecutar}"
-                        method="post">
+                            <input
+                                type="text"
+                                th:field="*{nombreCompleto}"
+                                required
+                                maxlength="120">
+                        </div>
 
-                        <button type="submit" class="btn">
-                            Ejecutar automatizacion
+                        <div class="form-field">
+                            <label>Usuario</label>
+
+                            <input
+                                type="text"
+                                th:field="*{username}"
+                                autocomplete="off"
+                                required
+                                maxlength="80">
+                        </div>
+
+                        <div class="form-field">
+                            <label>Correo</label>
+
+                            <input
+                                type="email"
+                                th:field="*{email}"
+                                maxlength="150">
+                        </div>
+
+                        <div class="form-field">
+                            <label>Contraseña</label>
+
+                            <input
+                                type="password"
+                                th:field="*{password}"
+                                autocomplete="new-password"
+                                required
+                                minlength="8">
+                        </div>
+
+                        <div class="form-field">
+                            <label>Rol</label>
+
+                            <select
+                                th:field="*{rolId}"
+                                required>
+
+                                <option value="">
+                                    Seleccione un rol
+                                </option>
+
+                                <option
+                                    th:each="rol : ${roles}"
+                                    th:value="${rol.id}"
+                                    th:text="${rol.nombre}">
+                                    ADMIN
+                                </option>
+
+                            </select>
+                        </div>
+
+                        <div class="form-field checkbox-field">
+
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    th:field="*{activo}">
+
+                                Usuario activo
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-actions">
+
+                        <a href="/usuarios"
+                           class="btn secondary">
+                            Cancelar
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="btn">
+                            Guardar usuario
                         </button>
 
-                    </form>
+                    </div>
 
-                </article>
+                </form>
 
             </div>
 
@@ -234,22 +317,6 @@
     </section>
 
 </main>
-
-<footer class="footer">
-
-    <div class="footer-top">
-
-        <div class="brand">
-            Bot Engine
-        </div>
-
-        <p>
-            AutomatizacionBotEngine
-        </p>
-
-    </div>
-
-</footer>
 
 </body>
 </html>

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Automatizaciones | Bot Engine</title>
+    <title>Usuarios | Bot Engine</title>
     <link rel="stylesheet" href="/css/botengine.css">
     <script src="/js/theme.js"></script>
 </head>
@@ -176,16 +177,16 @@
             <div class="hero-text">
 
                 <span class="brand-badge">
-                    Catalogo tecnico
+                    Administracion
                 </span>
 
                 <h1>
-                    Automatizaciones
+                    Usuarios del portal
                 </h1>
 
                 <p class="lead">
-                    Seleccione una automatizacion disponible para iniciar
-                    su ejecucion desde el portal.
+                    Gestion de las cuentas autorizadas para acceder
+                    y operar AutomatizacionBotEngine.
                 </p>
 
             </div>
@@ -200,32 +201,95 @@
 
         <div class="container">
 
-            <div class="cards">
+            <div class="users-panel">
 
-                <article class="card">
+                <div class="users-panel-header">
 
-                    <h5>LoginTest</h5>
+                    <div>
+                        <h2>Usuarios registrados</h2>
 
-                    <p>
-                        Escenario funcional base para validar la integracion
-                        entre Spring Boot, TestNG y Selenium WebDriver.
-                    </p>
+                        <p>
+                            Cuentas persistidas en PostgreSQL
+                            y asociadas a los roles del portal.
+                        </p>
+                    </div>
 
-                    <span class="brand-badge">
-                        Selenium + TestNG
+                    <div class="users-panel-actions">
+                        <a href="/usuarios/nuevo" class="btn">
+                            Nuevo usuario
+                        </a>
+
+                        <span class="brand-badge"
+                              th:text="${#lists.size(usuarios) + ' usuario(s)'}">
+                        1 usuario
                     </span>
+                    </div>
 
-                    <form
-                        th:action="@{/automatizaciones/login-test/ejecutar}"
-                        method="post">
+                </div>
 
-                        <button type="submit" class="btn">
-                            Ejecutar automatizacion
-                        </button>
+                <div class="users-table-wrap">
 
-                    </form>
+                    <table class="users-table">
 
-                </article>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Usuario</th>
+                            <th>Correo</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                        <tr th:each="usuario : ${usuarios}">
+
+                            <td th:text="${usuario.id}">1</td>
+
+                            <td th:text="${usuario.nombreCompleto}">
+                                Administrador Bot Engine
+                            </td>
+
+                            <td th:text="${usuario.username}">
+                                admin
+                            </td>
+
+                            <td th:text="${usuario.email != null ? usuario.email : '-'}">
+                                -
+                            </td>
+
+                            <td>
+                                <span class="role-pill"
+                                      th:text="${usuario.rol.nombre}">
+                                    ADMIN
+                                </span>
+                            </td>
+
+                            <td>
+                                <span
+                                    th:class="${usuario.activo ? 'status-pill active' : 'status-pill inactive'}"
+                                    th:text="${usuario.activo ? 'Activo' : 'Inactivo'}">
+                                    Activo
+                                </span>
+                            </td>
+
+                            <td>
+                                <a th:href="@{/usuarios/{id}/editar(id=${usuario.id})}"
+                                   class="btn secondary">
+                                    Editar
+                                </a>
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
 
             </div>
 

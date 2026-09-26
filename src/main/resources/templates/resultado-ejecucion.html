@@ -1,36 +1,170 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resultado | Bot Engine</title>
     <link rel="stylesheet" href="/css/botengine.css">
+    <script src="/js/theme.js"></script>
 </head>
 
 <body>
 
 <header class="header">
-    <div class="container nav">
 
-        <a href="/" class="brand">
-            Bot Engine
-        </a>
+    <div class="container nav portal-nav">
 
-        <span class="brand-badge">
-            Resultado de ejecucion
-        </span>
+        <div class="nav-left">
+
+            <button
+                type="button"
+                class="back-nav"
+                onclick="window.location.href='/';"
+                title="Regresar"
+                aria-label="Regresar">
+
+                <svg viewBox="0 0 24 24"
+                     aria-hidden="true">
+
+                    <path d="M15 18l-6-6 6-6"/>
+
+                </svg>
+
+            </button>
+
+
+            <details class="profile-menu">
+
+                <summary
+                    class="profile-trigger"
+                    title="Perfil de usuario">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true">
+
+                        <circle
+                            cx="12"
+                            cy="8"
+                            r="4">
+                        </circle>
+
+                        <path
+                            d="M4 20c0-4.1 3.6-7 8-7s8 2.9 8 7">
+                        </path>
+
+                    </svg>
+
+                </summary>
+
+                <div class="profile-dropdown">
+
+                    <div class="profile-summary">
+
+                        <div class="profile-small-avatar">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true">
+
+                                <circle
+                                    cx="12"
+                                    cy="8"
+                                    r="4">
+                                </circle>
+
+                                <path
+                                    d="M4 20c0-4.1 3.6-7 8-7s8 2.9 8 7">
+                                </path>
+
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <strong
+                                sec:authentication="name">
+                                usuario
+                            </strong>
+
+                            <small>
+                                Cuenta del portal
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="profile-divider"></div>
+
+                    <a href="/perfil"
+                       class="profile-option">
+
+                        <span>Editar perfil</span>
+
+                    </a>
+
+                    <a href="/configuracion"
+                       class="profile-option">
+
+                        <span>Configuracion</span>
+
+                    </a>
+
+                    <div class="profile-divider"></div>
+
+                    <form
+                        th:action="@{/logout}"
+                        method="post">
+
+                        <button
+                            type="submit"
+                            class="profile-option profile-logout">
+
+                            Cerrar sesion
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </details>
+
+            <a href="/"
+               class="brand">
+                Bot Engine
+            </a>
+
+            <span class="brand-badge">
+                Automation Portal
+            </span>
+
+        </div>
 
         <nav class="menu">
+
+            <a href="/#inicio">
+                Inicio
+            </a>
+
+            <a href="/#modulos">
+                Modulos
+            </a>
+
             <a href="/automatizaciones">
                 Automatizaciones
             </a>
 
-            <a href="/">
-                Inicio
+            <a href="/#estado">
+                Estado
             </a>
+
         </nav>
 
     </div>
+
 </header>
 
 <main>
