@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios | Bot Engine</title>
+    <link rel="stylesheet" href="/css/botengine.css">
+    <script src="/js/theme.js"></script>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="container nav portal-nav">
+
+        <div class="nav-left">
+
+            <button
+                type="button"
+                class="back-nav"
+                onclick="window.location.href='/';"
+                title="Regresar"
+                aria-label="Regresar">
+
+                <svg viewBox="0 0 24 24"
+                     aria-hidden="true">
+
+                    <path d="M15 18l-6-6 6-6"/>
+
+                </svg>
+
+            </button>
+
+
+            <details class="profile-menu">
+
+                <summary
+                    class="profile-trigger"
+                    title="Perfil de usuario">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true">
+
+                        <circle
+                            cx="12"
+                            cy="8"
+                            r="4">
+                        </circle>
+
+                        <path
+                            d="M4 20c0-4.1 3.6-7 8-7s8 2.9 8 7">
+                        </path>
+
+                    </svg>
+
+                </summary>
+
+                <div class="profile-dropdown">
+
+                    <div class="profile-summary">
+
+                        <div class="profile-small-avatar">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true">
+
+                                <circle
+                                    cx="12"
+                                    cy="8"
+                                    r="4">
+                                </circle>
+
+                                <path
+                                    d="M4 20c0-4.1 3.6-7 8-7s8 2.9 8 7">
+                                </path>
+
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <strong
+                                sec:authentication="name">
+                                usuario
+                            </strong>
+
+                            <small>
+                                Cuenta del portal
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="profile-divider"></div>
+
+                    <a href="/perfil"
+                       class="profile-option">
+
+                        <span>Editar perfil</span>
+
+                    </a>
+
+                    <a href="/configuracion"
+                       class="profile-option">
+
+                        <span>Configuracion</span>
+
+                    </a>
+
+                    <div class="profile-divider"></div>
+
+                    <form
+                        th:action="@{/logout}"
+                        method="post">
+
+                        <button
+                            type="submit"
+                            class="profile-option profile-logout">
+
+                            Cerrar sesion
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </details>
+
+            <a href="/"
+               class="brand">
+                Bot Engine
+            </a>
+
+            <span class="brand-badge">
+                Automation Portal
+            </span>
+
+        </div>
+
+        <nav class="menu">
+
+            <a href="/#inicio">
+                Inicio
+            </a>
+
+            <a href="/#modulos">
+                Modulos
+            </a>
+
+            <a href="/automatizaciones">
+                Automatizaciones
+            </a>
+
+            <a href="/#estado">
+                Estado
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+<main>
+
+    <section class="hero">
+
+        <div class="container hero-wrap">
+
+            <div class="hero-text">
+
+                <span class="brand-badge">
+                    Administracion
+                </span>
+
+                <h1>
+                    Usuarios del portal
+                </h1>
+
+                <p class="lead">
+                    Gestion de las cuentas autorizadas para acceder
+                    y operar AutomatizacionBotEngine.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="strip"></div>
+
+    <section>
+
+        <div class="container">
+
+            <div class="users-panel">
+
+                <div class="users-panel-header">
+
+                    <div>
+                        <h2>Usuarios registrados</h2>
+
+                        <p>
+                            Cuentas persistidas en PostgreSQL
+                            y asociadas a los roles del portal.
+                        </p>
+                    </div>
+
+                    <div class="users-panel-actions">
+                        <a href="/usuarios/nuevo" class="btn">
+                            Nuevo usuario
+                        </a>
+
+                        <span class="brand-badge"
+                              th:text="${#lists.size(usuarios) + ' usuario(s)'}">
+                        1 usuario
+                    </span>
+                    </div>
+
+                </div>
+
+                <div class="users-table-wrap">
+
+                    <table class="users-table">
+
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Usuario</th>
+                            <th>Correo</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                        <tr th:each="usuario : ${usuarios}">
+
+                            <td th:text="${usuario.id}">1</td>
+
+                            <td th:text="${usuario.nombreCompleto}">
+                                Administrador Bot Engine
+                            </td>
+
+                            <td th:text="${usuario.username}">
+                                admin
+                            </td>
+
+                            <td th:text="${usuario.email != null ? usuario.email : '-'}">
+                                -
+                            </td>
+
+                            <td>
+                                <span class="role-pill"
+                                      th:text="${usuario.rol.nombre}">
+                                    ADMIN
+                                </span>
+                            </td>
+
+                            <td>
+                                <span
+                                    th:class="${usuario.activo ? 'status-pill active' : 'status-pill inactive'}"
+                                    th:text="${usuario.activo ? 'Activo' : 'Inactivo'}">
+                                    Activo
+                                </span>
+                            </td>
+
+                            <td>
+                                <a th:href="@{/usuarios/{id}/editar(id=${usuario.id})}"
+                                   class="btn secondary">
+                                    Editar
+                                </a>
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer class="footer">
+
+    <div class="footer-top">
+
+        <div class="brand">
+            Bot Engine
+        </div>
+
+        <p>
+            AutomatizacionBotEngine
+        </p>
+
+    </div>
+
+</footer>
+
+</body>
+</html>

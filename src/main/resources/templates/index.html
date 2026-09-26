@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutomatizacionBotEngine</title>
+    <link rel="stylesheet" href="/css/botengine.css">
+    <script src="/js/theme.js"></script>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="container nav portal-nav">
+
+        <div class="nav-left">
+
+            <details class="profile-menu">
+
+                <summary
+                    class="profile-trigger"
+                    title="Perfil de usuario">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true">
+
+                        <circle
+                            cx="12"
+                            cy="8"
+                            r="4">
+                        </circle>
+
+                        <path
+                            d="M4 20c0-4.1 3.6-7 8-7s8 2.9 8 7">
+                        </path>
+
+                    </svg>
+
+                </summary>
+
+                <div class="profile-dropdown">
+
+                    <div class="profile-summary">
+
+                        <div class="profile-small-avatar">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true">
+
+                                <circle
+                                    cx="12"
+                                    cy="8"
+                                    r="4">
+                                </circle>
+
+                                <path
+                                    d="M4 20c0-4.1 3.6-7 8-7s8 2.9 8 7">
+                                </path>
+
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <strong
+                                sec:authentication="name">
+                                usuario
+                            </strong>
+
+                            <small>
+                                Cuenta del portal
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="profile-divider"></div>
+
+                    <a href="/perfil"
+                       class="profile-option">
+
+                        <span>Editar perfil</span>
+
+                    </a>
+
+                    <a href="/configuracion"
+                       class="profile-option">
+
+                        <span>Configuracion</span>
+
+                    </a>
+
+                    <div class="profile-divider"></div>
+
+                    <form
+                        th:action="@{/logout}"
+                        method="post">
+
+                        <button
+                            type="submit"
+                            class="profile-option profile-logout">
+
+                            Cerrar sesion
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </details>
+
+            <a href="/"
+               class="brand">
+                Bot Engine
+            </a>
+
+            <span class="brand-badge">
+                Automation Portal
+            </span>
+
+        </div>
+
+        <nav class="menu">
+
+            <a href="/#inicio">
+                Inicio
+            </a>
+
+            <a href="/#modulos">
+                Modulos
+            </a>
+
+            <a href="/automatizaciones">
+                Automatizaciones
+            </a>
+
+            <a href="/#estado">
+                Estado
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <section class="hero" id="inicio">
+
+        <div class="container hero-wrap">
+
+            <div class="hero-text">
+
+                <span class="brand-badge">
+                    Plataforma de automatizacion
+                </span>
+
+                <h1>
+                    AutomatizacionBotEngine
+                </h1>
+
+                <p class="lead">
+                    Portal centralizado para administrar, ejecutar y supervisar
+                    pruebas funcionales automatizadas de las aplicaciones web
+                    gestionadas por Bot Engine.
+                </p>
+
+                <ul class="checks">
+
+                    <li>
+                        <svg viewBox="0 0 24 24" width="22" height="22"
+                             fill="none" stroke="currentColor"
+                             stroke-width="2">
+                            <path d="M20 6L9 17l-5-5"/>
+                        </svg>
+                        Framework Selenium Java disponible
+                    </li>
+
+                    <li>
+                        <svg viewBox="0 0 24 24" width="22" height="22"
+                             fill="none" stroke="currentColor"
+                             stroke-width="2">
+                            <path d="M20 6L9 17l-5-5"/>
+                        </svg>
+                        Ejecuciones centralizadas desde el portal
+                    </li>
+
+                    <li>
+                        <svg viewBox="0 0 24 24" width="22" height="22"
+                             fill="none" stroke="currentColor"
+                             stroke-width="2">
+                            <path d="M20 6L9 17l-5-5"/>
+                        </svg>
+                        Evidencias y reportes organizados por ejecucion
+                    </li>
+
+                </ul>
+
+                <div class="actions">
+                    <a href="/automatizaciones" class="btn">
+                        Ir a automatizaciones
+                    </a>
+
+                    <a href="#estado" class="btn secondary">
+                        Estado del framework
+                    </a>
+                </div>
+
+            </div>
+
+
+            <div class="hero-bot">
+
+                <article class="card">
+
+                    <svg class="ico"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.5">
+
+                        <rect x="4" y="5" width="16" height="14" rx="3"/>
+                        <path d="M9 10h.01"/>
+                        <path d="M15 10h.01"/>
+                        <path d="M9 15h6"/>
+                        <path d="M12 2v3"/>
+
+                    </svg>
+
+                    <h5>Motor de automatizacion</h5>
+
+                    <p>
+                        Selenium WebDriver, TestNG, Maven y Spring Boot
+                        integrados dentro de una misma plataforma.
+                    </p>
+
+                    <span class="brand-badge">
+                        Framework activo
+                    </span>
+
+                </article>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="strip"></div>
+
+
+    <section id="modulos">
+
+        <div class="container">
+
+            <h2>
+                Modulos del portal
+            </h2>
+
+            <p class="lead">
+                Componentes destinados a administrar el proceso completo
+                de certificacion de pruebas funcionales.
+            </p>
+
+
+            <div class="cards">
+
+                <article class="card">
+
+                    <svg class="ico"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.5">
+
+                        <rect x="3" y="4" width="18" height="16" rx="2"/>
+                        <path d="M3 9h18"/>
+                        <path d="M8 4v16"/>
+
+                    </svg>
+
+                    <h5>Empresas</h5>
+
+                    <p>
+                        Administracion de las empresas y aplicaciones
+                        disponibles para cada usuario del portal.
+                    </p>
+
+                    <span class="card-subtitle">
+                        Gestion de acceso por empresa
+                    </span>
+
+                </article>
+
+
+                <article class="card">
+
+                    <svg class="ico"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.5">
+
+                        <path d="M8 9l3 3-3 3"/>
+                        <path d="M13 15h3"/>
+                        <rect x="3" y="4" width="18" height="16" rx="2"/>
+
+                    </svg>
+
+                    <h5>Automatizaciones</h5>
+
+                    <p>
+                        Registro y seleccion de los escenarios funcionales
+                        disponibles dentro del framework Selenium.
+                    </p>
+
+                    <span class="card-subtitle">
+                        Scripts y casos automatizados
+                    </span>
+
+                    <a href="/automatizaciones" class="btn">
+                        Abrir automatizaciones
+                    </a>
+
+                </article>
+
+
+                <article class="card">
+
+                    <svg class="ico"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.5">
+
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M10 8l6 4-6 4z"/>
+
+                    </svg>
+
+                    <h5>Ejecuciones</h5>
+
+                    <p>
+                        Lanzamiento y seguimiento de pruebas funcionales
+                        directamente desde el portal.
+                    </p>
+
+                    <span class="card-subtitle">
+                        Control centralizado de ejecucion
+                    </span>
+
+                </article>
+
+
+                <article class="card">
+
+                    <svg class="ico"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.5">
+
+                        <path d="M4 19V5"/>
+                        <path d="M4 19h16"/>
+                        <path d="M8 16v-5"/>
+                        <path d="M12 16V8"/>
+                        <path d="M16 16v-8"/>
+
+                    </svg>
+
+                    <h5>Reportes</h5>
+
+                    <p>
+                        Consulta de resultados, tiempos, estados y
+                        evidencias generadas por las automatizaciones.
+                    </p>
+
+                    <span class="card-subtitle">
+                        Evidencia tecnica de certificacion
+                    </span>
+
+                </article>
+
+
+                <article class="card">
+
+                    <svg class="ico"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.5">
+
+                        <path d="M3 12a9 9 0 1 0 3-6.7"/>
+                        <path d="M3 4v6h6"/>
+                        <path d="M12 7v5l3 2"/>
+
+                    </svg>
+
+                    <h5>Historial</h5>
+
+                    <p>
+                        Registro cronologico de las ejecuciones realizadas
+                        y sus resultados asociados.
+                    </p>
+
+                    <span class="card-subtitle">
+                        Trazabilidad de pruebas
+                    </span>
+
+                </article>
+
+
+                <article class="card">
+
+                    <svg class="ico"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.5">
+
+                        <circle cx="9" cy="8" r="4"/>
+                        <path d="M3 21v-2a6 6 0 0 1 6-6"/>
+                        <circle cx="17" cy="17" r="4"/>
+                        <path d="M17 15v4"/>
+                        <path d="M15 17h4"/>
+
+                    </svg>
+
+                    <h5>Usuarios y permisos</h5>
+
+                    <p>
+                        Gestion de usuarios, roles y acceso a las empresas
+                        asignadas dentro de la plataforma.
+                    </p>
+
+                    <span class="card-subtitle">
+                        Control de acceso
+                    </span>
+
+                    <a sec:authorize="hasRole('ADMIN')"
+                       href="/usuarios"
+                       class="btn module-button">
+                        Administrar usuarios
+                    </a>
+
+                </article>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section id="estado">
+
+        <div class="container">
+
+            <h2>
+                Estado tecnico
+            </h2>
+
+            <div class="cards">
+
+                <article class="card">
+
+                    <h5>Portal</h5>
+
+                    <p>
+                        Spring Boot activo y configurado.
+                    </p>
+
+                    <span class="brand-badge">
+                        Operativo
+                    </span>
+
+                </article>
+
+
+                <article class="card">
+
+                    <h5>Seguridad</h5>
+
+                    <p>
+                        Spring Security y BCrypt habilitados.
+                    </p>
+
+                    <span class="brand-badge">
+                        Activo
+                    </span>
+
+                </article>
+
+
+                <article class="card">
+
+                    <h5>Framework</h5>
+
+                    <p>
+                        Selenium WebDriver y TestNG integrados.
+                    </p>
+
+                    <span class="brand-badge">
+                        Disponible
+                    </span>
+
+                </article>
+
+
+                <article class="card">
+
+                    <h5>Reportes</h5>
+
+                    <p>
+                        Estructura centralizada de evidencias configurada.
+                    </p>
+
+                    <span class="brand-badge">
+                        Preparado
+                    </span>
+
+                </article>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-top">
+
+        <div class="brand">
+            Bot Engine
+        </div>
+
+        <p>
+            AutomatizacionBotEngine
+        </p>
+
+        <p class="hashtag">
+            Automatizacion de pruebas funcionales
+        </p>
+
+    </div>
+
+    <div class="footer-bottom">
+
+        Portal interno para la gestion y ejecucion de pruebas
+        funcionales automatizadas.
+
+        <br>
+
+        Selenium WebDriver + TestNG + Spring Boot
+
+    </div>
+
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Iniciar sesion | Bot Engine</title>
+
+    <link rel="stylesheet" href="/css/botengine.css">
+    <script src="/js/theme.js"></script>
+</head>
+
+<body class="login-page">
+
+<header class="header">
+
+    <div class="container nav">
+
+        <div class="brand">
+            Bot Engine
+        </div>
+
+        <span class="brand-badge">
+            Automation Portal
+        </span>
+
+    </div>
+
+</header>
+
+<main class="login-main">
+
+    <section class="login-shell">
+
+        <div class="login-brand-area">
+
+            <span class="brand-badge">
+                Plataforma de automatizacion
+            </span>
+
+            <h1>
+                Automatizacion<span>BotEngine</span>
+            </h1>
+
+            <p>
+                Portal centralizado para administrar,
+                ejecutar y supervisar pruebas funcionales
+                automatizadas.
+            </p>
+
+            <div class="login-features">
+
+                <div>
+                    <span>✓</span>
+                    Selenium WebDriver
+                </div>
+
+                <div>
+                    <span>✓</span>
+                    TestNG
+                </div>
+
+                <div>
+                    <span>✓</span>
+                    Spring Boot
+                </div>
+
+                <div>
+                    <span>✓</span>
+                    PostgreSQL
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="login-card">
+
+            <div class="login-card-header">
+
+                <div class="login-icon">
+                    ◉
+                </div>
+
+                <h2>
+                    Iniciar sesion
+                </h2>
+
+                <p>
+                    Ingrese sus credenciales para acceder
+                    al portal de automatizacion.
+                </p>
+
+            </div>
+
+            <div
+                th:if="${param.error}"
+                class="login-alert login-alert-error">
+
+                Credenciales invalidas o usuario inactivo.
+
+            </div>
+
+            <div
+                th:if="${param.logout}"
+                class="login-alert login-alert-success">
+
+                La sesion se cerro correctamente.
+
+            </div>
+
+            <form
+                th:action="@{/login}"
+                method="post"
+                autocomplete="off">
+
+                <div class="form-field login-field">
+
+                    <label for="username">
+                        Usuario
+                    </label>
+
+                    <input
+                        id="username"
+                        name="username"
+                        type="text"
+                        autocomplete="username"
+                        required
+                        autofocus>
+
+                </div>
+
+                <div class="form-field login-field">
+
+                    <label for="password">
+                        Contraseña
+                    </label>
+
+                    <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        autocomplete="current-password"
+                        required>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn login-button">
+
+                    Iniciar sesion
+
+                </button>
+
+            </form>
+
+            <div class="login-security">
+
+                <span>●</span>
+
+                Acceso protegido mediante Spring Security
+                y BCrypt.
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer class="footer login-footer">
+
+    <div class="footer-top">
+
+        <div class="brand">
+            Bot Engine
+        </div>
+
+        <p>
+            AutomatizacionBotEngine
+        </p>
+
+    </div>
+
+</footer>
+
+</body>
+
+</html>

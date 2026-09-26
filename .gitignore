@@ -1,0 +1,23 @@
+target/
+.idea/
+*.iml
+.DS_Store
+
+# Reportes y evidencias generadas
+reportes/
+*.log
+
+# Configuracion local y secretos
+config/config.properties
+.env
+.env.*
+!.env.example
+
+# Datos reales de prueba
+src/test/resources/data/datos_prueba_login.csv
+
+# Respaldos locales
+pom.xml.backup
+pom.xml.paso4.backup
+
+config/application.properties
