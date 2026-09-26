@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado | Bot Engine</title>
+    <link rel="stylesheet" href="/css/botengine.css">
+</head>
+
+<body>
+
+<header class="header">
+    <div class="container nav">
+
+        <a href="/" class="brand">
+            Bot Engine
+        </a>
+
+        <span class="brand-badge">
+            Resultado de ejecucion
+        </span>
+
+        <nav class="menu">
+            <a href="/automatizaciones">
+                Automatizaciones
+            </a>
+
+            <a href="/">
+                Inicio
+            </a>
+        </nav>
+
+    </div>
+</header>
+
+<main>
+
+    <section class="hero">
+
+        <div class="container">
+
+            <h1>
+                Resultado de automatizacion
+            </h1>
+
+            <div class="cards">
+
+                <article class="card">
+
+                    <h5 th:text="${resultado.automatizacion}">
+                        Automatizacion
+                    </h5>
+
+                    <p>
+                        Identificador:
+                    </p>
+
+                    <span
+                        class="brand-badge"
+                        th:text="${resultado.id}">
+                    </span>
+
+                    <p>
+                        Estado:
+                    </p>
+
+                    <span
+                        class="brand-badge"
+                        th:text="${resultado.estado}">
+                    </span>
+
+                    <p>
+                        Fecha de inicio:
+                    </p>
+
+                    <span
+                        th:text="${resultado.fechaInicio}">
+                    </span>
+
+                    <p>
+                        Fecha de finalizacion:
+                    </p>
+
+                    <span
+                        th:text="${resultado.fechaFin}">
+                    </span>
+
+                    <p>
+                        Duracion:
+                    </p>
+
+                    <span>
+                        <strong
+                            th:text="${resultado.duracionMilisegundos}">
+                        </strong>
+                        ms
+                    </span>
+
+                </article>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>

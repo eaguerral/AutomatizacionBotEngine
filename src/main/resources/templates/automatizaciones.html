@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automatizaciones | Bot Engine</title>
+    <link rel="stylesheet" href="/css/botengine.css">
+</head>
+
+<body>
+
+<header class="header">
+    <div class="container nav">
+
+        <a href="/" class="brand">
+            Bot Engine
+        </a>
+
+        <span class="brand-badge">
+            Automation Portal
+        </span>
+
+        <nav class="menu">
+            <a href="/">Inicio</a>
+
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn secondary">
+                    Cerrar sesion
+                </button>
+            </form>
+        </nav>
+
+    </div>
+</header>
+
+<main>
+
+    <section class="hero">
+
+        <div class="container hero-wrap">
+
+            <div class="hero-text">
+
+                <span class="brand-badge">
+                    Catalogo tecnico
+                </span>
+
+                <h1>
+                    Automatizaciones
+                </h1>
+
+                <p class="lead">
+                    Seleccione una automatizacion disponible para iniciar
+                    su ejecucion desde el portal.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="strip"></div>
+
+    <section>
+
+        <div class="container">
+
+            <div class="cards">
+
+                <article class="card">
+
+                    <h5>LoginTest</h5>
+
+                    <p>
+                        Escenario funcional base para validar la integracion
+                        entre Spring Boot, TestNG y Selenium WebDriver.
+                    </p>
+
+                    <span class="brand-badge">
+                        Selenium + TestNG
+                    </span>
+
+                    <form
+                        th:action="@{/automatizaciones/login-test/ejecutar}"
+                        method="post">
+
+                        <button type="submit" class="btn">
+                            Ejecutar automatizacion
+                        </button>
+
+                    </form>
+
+                </article>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer class="footer">
+
+    <div class="footer-top">
+
+        <div class="brand">
+            Bot Engine
+        </div>
+
+        <p>
+            AutomatizacionBotEngine
+        </p>
+
+    </div>
+
+</footer>
+
+</body>
+</html>
