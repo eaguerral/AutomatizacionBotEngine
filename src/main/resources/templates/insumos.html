@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Clases | Bot Engine</title>
+
+    <link rel="stylesheet"
+          href="/css/botengine.css">
+
+    <script src="/js/theme.js"></script>
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="container nav portal-nav">
+
+        <div class="nav-left">
+
+            <a href="/"
+               class="brand">
+                Bot Engine
+            </a>
+
+            <span class="brand-badge">
+                Automation Portal
+            </span>
+
+        </div>
+
+    </div>
+
+</header>
+
+<main>
+
+<section class="hero">
+
+    <div class="container hero-wrap">
+
+        <div class="hero-text"
+             style="width:100%;">
+
+            <div class="page-action-row">
+
+                <span class="brand-badge">
+                    Configuración
+                </span>
+
+                <a href="/administracion/configuracion"
+                   class="page-back-link">
+                    &larr; Regresar
+                </a>
+
+            </div>
+
+            <h1>
+                Clases de automatización
+            </h1>
+
+            <p class="lead">
+                Registro y vinculación de escenarios funcionales
+                asociados a una empresa.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<div class="strip"></div>
+
+<section>
+
+<div class="container">
+
+<div th:if="${error != null}"
+     class="form-error"
+     th:text="${error}">
+</div>
+
+<div class="users-panel">
+
+    <div class="module-toolbar">
+
+        <div class="module-search">
+
+            <input
+                id="buscarClase"
+                type="search"
+                placeholder="Buscar por código, nombre, empresa, clase o XML...">
+
+        </div>
+
+        <button
+            id="btnAgregarClase"
+            type="button"
+            class="btn">
+
+            + AGREGAR CLASE
+
+        </button>
+
+    </div>
+
+    <div id="claseFormPanel"
+         class="module-form-panel"
+         th:classappend="${mostrarFormulario} ? ' is-open' : ''">
+
+        <h2 th:text="${insumoForm.id != null ? 'Editar clase' : 'Nueva clase'}">
+            Nueva clase
+        </h2>
+
+        <form
+            th:action="@{/administracion/configuracion/clases/guardar}"
+            th:object="${insumoForm}"
+            method="post">
+
+            <input
+                type="hidden"
+                th:field="*{id}">
+
+            <div class="form-grid">
+
+                <div class="form-field">
+
+                    <label>
+                        Código
+                    </label>
+
+                    <input
+                        type="text"
+                        th:field="*{codigo}"
+                        required
+                        placeholder="EMPRESA_PROCESO">
+
+                    <small>
+                        Identificador único del escenario.
+                    </small>
+
+                </div>
+
+                <div class="form-field">
+
+                    <label>
+                        Nombre
+                    </label>
+
+                    <input
+                        type="text"
+                        th:field="*{nombre}"
+                        required
+                        placeholder="Nombre de la prueba funcional">
+
+                    <small>
+                        Nombre visible para el usuario.
+                    </small>
+
+                </div>
+
+                <div class="form-field">
+
+                    <label>
+                        Empresa
+                    </label>
+
+                    <select
+                        id="empresaSelect"
+                        th:field="*{empresaId}"
+                        required>
+
+                        <option value="">
+                            Seleccione una empresa
+                        </option>
+
+                        <option
+                            th:each="empresa : ${empresas}"
+                            th:value="${empresa.id}"
+                            th:text="${empresa.nombre}">
+                        </option>
+
+                    </select>
+
+                    <small>
+                        Seleccione una empresa registrada en Configuración.
+                    </small>
+
+                </div>
+
+                <div class="form-field">
+
+                    <label>
+                        Descripción
+                    </label>
+
+                    <textarea
+                        th:field="*{descripcion}"
+                        maxlength="300"
+                        rows="4"
+                        placeholder="Describa el objetivo de la automatización">
+                    </textarea>
+
+                </div>
+
+            </div>
+
+            <div class="resource-detection-panel">
+
+                <h3>
+                    Recursos detectados
+                </h3>
+
+                <p id="estadoDeteccion">
+                    Seleccione una empresa para buscar los recursos disponibles.
+                </p>
+
+                <div class="form-grid">
+
+                    <div class="form-field">
+
+                        <label>
+                            Clase Java
+                        </label>
+
+                        <select
+                            id="claseSelect"
+                            name="clase"
+                            disabled>
+
+                            <option value="">
+                                Seleccione una clase Java
+                            </option>
+
+                        </select>
+
+                        <small>
+                            Clases TestNG detectadas automáticamente.
+                        </small>
+
+                    </div>
+
+                    <div class="form-field">
+
+                        <label>
+                            Archivo XML
+                        </label>
+
+                        <select
+                            id="xmlSelect"
+                            name="archivoXml"
+                            disabled>
+
+                            <option value="">
+                                Seleccione un archivo XML
+                            </option>
+
+                        </select>
+
+                        <small>
+                            Archivos XML detectados para la empresa.
+                        </small>
+
+                    </div>
+
+                    <div class="form-field">
+
+                        <label>
+                            Ruta generada de la clase
+                        </label>
+
+                        <input
+                            id="rutaClase"
+                            type="text"
+                            readonly
+                            placeholder="Se generará automáticamente">
+
+                    </div>
+
+                    <div class="form-field">
+
+                        <label>
+                            Ruta generada del XML
+                        </label>
+
+                        <input
+                            id="rutaXml"
+                            type="text"
+                            readonly
+                            placeholder="Se generará automáticamente">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="form-actions">
+
+                <a href="/administracion/configuracion/clases"
+                   class="btn secondary">
+
+                    CANCELAR
+
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn">
+
+                    GUARDAR CLASE
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <div class="table-shell">
+
+        <table class="data-table">
+
+            <thead>
+
+            <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Empresa</th>
+                <th>Estado</th>
+                <th>Recursos detectados</th>
+                <th>Acciones</th>
+            </tr>
+
+            </thead>
+
+            <tbody id="tablaClases">
+
+            <tr th:each="insumo : ${insumos}"
+                th:attr="data-search=${insumo.codigo + ' ' + insumo.nombre + ' ' + insumo.carpetaEmpresa + ' ' + (insumo.claseDetectada != null ? insumo.claseDetectada : '') + ' ' + (insumo.archivoXmlDetectado != null ? insumo.archivoXmlDetectado : '')}">
+
+                <td class="mono-cell"
+                    th:text="${insumo.codigo}">
+                </td>
+
+                <td th:text="${insumo.nombre}">
+                </td>
+
+                <td th:text="${insumo.carpetaEmpresa}">
+                </td>
+
+                <td>
+
+                    <span class="brand-badge"
+                          th:text="${insumo.estado}">
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <div class="resource-lines">
+
+                        <small>
+                            Clase:
+                            <strong th:text="${insumo.claseDetectada != null ? insumo.claseDetectada : 'Pendiente'}">
+                            </strong>
+                        </small>
+
+                        <small>
+                            XML:
+                            <strong th:text="${insumo.archivoXmlDetectado != null ? insumo.archivoXmlDetectado : 'Pendiente'}">
+                            </strong>
+                        </small>
+
+                        <details class="route-details">
+
+                            <summary>
+                                Ver rutas
+                            </summary>
+
+                            <div>
+                                Clase:
+                                <span th:text="${insumo.rutaClaseGenerada != null ? insumo.rutaClaseGenerada : 'Pendiente'}">
+                                </span>
+                            </div>
+
+                            <div>
+                                XML:
+                                <span th:text="${insumo.rutaXmlGenerada != null ? insumo.rutaXmlGenerada : 'Pendiente'}">
+                                </span>
+                            </div>
+
+                        </details>
+
+                    </div>
+
+                </td>
+
+                <td>
+
+                    <div class="action-buttons">
+
+                        <a
+                            th:href="@{/administracion/configuracion/clases(editar=${insumo.id})}"
+                            class="btn secondary btn-small">
+
+                            EDITAR
+
+                        </a>
+
+                        <form
+                            th:if="${insumo.estado.name() == 'VINCULADO'}"
+                            th:action="@{/administracion/configuracion/clases/{id}/publicar(id=${insumo.id})}"
+                            method="post">
+
+                            <button
+                                type="submit"
+                                class="btn btn-small"
+                                title="Crear o sincronizar esta clase en el catálogo de automatizaciones">
+
+                                PUBLICAR
+
+                            </button>
+
+                        </form>
+                        <form
+                            th:action="@{/administracion/configuracion/clases/{id}/eliminar(id=${insumo.id})}"
+                            method="post">
+
+                            <button
+                                type="submit"
+                                class="btn secondary btn-small btn-danger"
+                                onclick="return confirm('¿Desea eliminar esta clase?');">
+
+                                ELIMINAR
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+            <tr th:if="${insumos == null or insumos.isEmpty()}">
+
+                <td colspan="6"
+                    class="empty-state">
+
+                    No existen clases registradas.
+
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+<script>
+
+const panel =
+    document.getElementById(
+        "claseFormPanel"
+    );
+
+const empresaSelect =
+    document.getElementById(
+        "empresaSelect"
+    );
+
+const claseSelect =
+    document.getElementById(
+        "claseSelect"
+    );
+
+const xmlSelect =
+    document.getElementById(
+        "xmlSelect"
+    );
+
+const rutaClase =
+    document.getElementById(
+        "rutaClase"
+    );
+
+const rutaXml =
+    document.getElementById(
+        "rutaXml"
+    );
+
+const estadoDeteccion =
+    document.getElementById(
+        "estadoDeteccion"
+    );
+
+let carpetaEmpresa = "";
+
+document
+    .getElementById(
+        "btnAgregarClase"
+    )
+    .addEventListener(
+        "click",
+        function () {
+
+            panel.classList.add(
+                "is-open"
+            );
+
+            panel.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+    );
+
+empresaSelect.addEventListener(
+    "change",
+    async function () {
+
+        const empresaId =
+            empresaSelect.value;
+
+        limpiarRecursos();
+
+        if (!empresaId) {
+
+            estadoDeteccion.textContent =
+                "Seleccione una empresa para buscar los recursos disponibles.";
+
+            return;
+        }
+
+        estadoDeteccion.textContent =
+            "Buscando recursos disponibles...";
+
+        try {
+
+            const respuesta =
+                await fetch(
+                    "/administracion/configuracion/clases/recursos?empresaId="
+                    + encodeURIComponent(
+                        empresaId
+                    )
+                );
+
+            if (!respuesta.ok) {
+
+                throw new Error(
+                    "No fue posible consultar los recursos."
+                );
+            }
+
+            const datos =
+                await respuesta.json();
+
+            carpetaEmpresa =
+                datos.carpeta;
+
+            cargarOpciones(
+                claseSelect,
+                datos.clases,
+                "Seleccione una clase Java"
+            );
+
+            cargarOpciones(
+                xmlSelect,
+                datos.xml,
+                "Seleccione un archivo XML"
+            );
+
+            claseSelect.disabled =
+                datos.clases.length === 0;
+
+            xmlSelect.disabled =
+                datos.xml.length === 0;
+
+            claseSelect.required =
+                datos.clases.length > 0;
+
+            xmlSelect.required =
+                datos.xml.length > 0;
+
+            estadoDeteccion.textContent =
+                datos.clases.length
+                + " clase(s) Java y "
+                + datos.xml.length
+                + " archivo(s) XML detectados para "
+                + datos.empresa
+                + ".";
+
+        }
+        catch (error) {
+
+            estadoDeteccion.textContent =
+                "No fue posible detectar los recursos de la empresa.";
+
+            console.error(
+                error
+            );
+        }
+    }
+);
+
+claseSelect.addEventListener(
+    "change",
+    actualizarRutas
+);
+
+xmlSelect.addEventListener(
+    "change",
+    actualizarRutas
+);
+
+function limpiarRecursos() {
+
+    carpetaEmpresa = "";
+
+    claseSelect.innerHTML =
+        '<option value="">Seleccione una clase Java</option>';
+
+    xmlSelect.innerHTML =
+        '<option value="">Seleccione un archivo XML</option>';
+
+    claseSelect.disabled = true;
+    xmlSelect.disabled = true;
+
+    claseSelect.required = false;
+    xmlSelect.required = false;
+
+    rutaClase.value = "";
+    rutaXml.value = "";
+}
+
+function cargarOpciones(
+    select,
+    valores,
+    textoInicial) {
+
+    select.innerHTML = "";
+
+    const inicial =
+        document.createElement(
+            "option"
+        );
+
+    inicial.value = "";
+    inicial.textContent =
+        textoInicial;
+
+    select.appendChild(
+        inicial
+    );
+
+    valores.forEach(
+        valor => {
+
+            const opcion =
+                document.createElement(
+                    "option"
+                );
+
+            opcion.value =
+                valor;
+
+            opcion.textContent =
+                valor;
+
+            select.appendChild(
+                opcion
+            );
+        }
+    );
+}
+
+function actualizarRutas() {
+
+    if (
+        carpetaEmpresa
+        && claseSelect.value
+    ) {
+
+        rutaClase.value =
+            "com.botengine.framework.automatizaciones."
+            + carpetaEmpresa
+            + ".tests."
+            + claseSelect.value;
+
+    }
+    else {
+
+        rutaClase.value = "";
+    }
+
+    if (
+        carpetaEmpresa
+        && xmlSelect.value
+    ) {
+
+        rutaXml.value =
+            "automatizaciones/xml/"
+            + carpetaEmpresa
+            + "/"
+            + xmlSelect.value;
+
+    }
+    else {
+
+        rutaXml.value = "";
+    }
+}
+
+document
+    .getElementById(
+        "buscarClase"
+    )
+    .addEventListener(
+        "input",
+        function (event) {
+
+            const valor =
+                event.target.value
+                    .toLowerCase()
+                    .trim();
+
+            document
+                .querySelectorAll(
+                    "#tablaClases tr[data-search]"
+                )
+                .forEach(
+                    row => {
+
+                        row.style.display =
+                            row.dataset.search
+                                .toLowerCase()
+                                .includes(valor)
+                                ? ""
+                                : "none";
+                    }
+                );
+        }
+    );
+
+if (empresaSelect.value) {
+
+    empresaSelect.dispatchEvent(
+        new Event(
+            "change"
+        )
+    );
+}
+
+</script>
+
+</body>
+</html>

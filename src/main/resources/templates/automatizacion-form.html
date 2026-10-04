@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Nueva automatizacion | Bot Engine</title>
+
+    <link rel="stylesheet"
+          href="/css/botengine.css">
+
+    <script src="/js/theme.js"></script>
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="container nav portal-nav">
+
+        <div class="nav-left">
+
+            <button
+                type="button"
+                class="back-nav"
+                onclick="window.location.href='/automatizaciones/admin';"
+                title="Regresar"
+                aria-label="Regresar">
+
+                <svg viewBox="0 0 24 24"
+                     aria-hidden="true">
+
+                    <path d="M15 18l-6-6 6-6"/>
+
+                </svg>
+
+            </button>
+
+            <a href="/"
+               class="brand">
+                Bot Engine
+            </a>
+
+            <span class="brand-badge">
+                Automation Portal
+            </span>
+
+        </div>
+
+    </div>
+
+</header>
+
+<main>
+
+    <section class="hero">
+
+        <div class="container hero-wrap">
+
+            <div class="hero-text">
+
+                <span class="brand-badge">
+                    Administracion
+                </span>
+
+                <h1>
+                    Nueva automatizacion
+                </h1>
+
+                <p class="lead">
+                    Registro de una prueba funcional
+                    disponible dentro del framework.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="strip"></div>
+
+    <section>
+
+        <div class="container">
+
+            <div class="user-form-panel">
+
+                <div th:if="${error != null}"
+                     class="form-error"
+                     th:text="${error}">
+                    Error
+                </div>
+
+                <form
+                    id="formNuevaAutomatizacion"
+                    th:action="@{/automatizaciones/admin/nueva}"
+                    th:object="${automatizacionForm}"
+                    method="post"
+                    autocomplete="off">
+
+                    <div class="form-grid">
+
+                        <div class="form-field">
+
+                            <label>
+                                Codigo
+                            </label>
+
+                            <input
+                                type="text"
+                                th:field="*{codigo}"
+                                required
+                                maxlength="60"
+                                placeholder="EMPRESA_PRUEBA">
+
+                            <small>
+                                Identificador unico de la automatizacion.
+                            </small>
+
+                        </div>
+
+                        <div class="form-field">
+
+                            <label>
+                                Nombre
+                            </label>
+
+                            <input
+                                type="text"
+                                th:field="*{nombre}"
+                                required
+                                maxlength="120"
+                                placeholder="Prueba funcional empresa">
+
+                            <small>
+                                Nombre descriptivo que vera el usuario
+                                al seleccionar la automatizacion.
+                            </small>
+
+                        </div>
+
+                        <div class="form-field">
+
+                            <label>
+                                Carpeta de empresa
+                            </label>
+
+                            <input
+                                id="carpetaEmpresa"
+                                type="text"
+                                required
+                                maxlength="80"
+                                placeholder="empresa">
+
+                            <small>
+                                Escriba solo el nombre de la carpeta correspondiente a la empresa.
+                            </small>
+
+                        </div>
+
+                        <div class="form-field">
+
+                            <label>
+                                Clase Java
+                            </label>
+
+                            <input
+                                id="nombreClase"
+                                type="text"
+                                required
+                                maxlength="120"
+                                placeholder="EmpresaPruebaTest">
+
+                            <small>
+                                Solo escriba el nombre de la clase.
+                                No coloque paquete ni .java.
+                            </small>
+
+                        </div>
+
+                        <div class="form-field">
+
+                            <label>
+                                Archivo XML
+                            </label>
+
+                            <input
+                                id="nombreXml"
+                                type="text"
+                                required
+                                maxlength="120"
+                                placeholder="empresa-prueba.xml">
+
+                            <small>
+                                Escriba solo el nombre del archivo XML correspondiente a la automatizacion.
+                            </small>
+
+                        </div>
+
+                        <div class="form-field">
+
+                            <label>
+                                Ruta generada de la clase
+                            </label>
+
+                            <input
+                                id="vistaClase"
+                                type="text"
+                                readonly
+                                placeholder="Se generara automaticamente">
+
+                        </div>
+
+                        <div class="form-field">
+
+                            <label>
+                                Ruta generada del XML
+                            </label>
+
+                            <input
+                                id="vistaXml"
+                                type="text"
+                                readonly
+                                placeholder="Se generara automaticamente">
+
+                        </div>
+
+                        <div class="form-field">
+
+                            <label>
+                                Descripcion
+                            </label>
+
+                            <textarea
+                                th:field="*{descripcion}"
+                                maxlength="300"
+                                rows="4"
+                                placeholder="Describa el objetivo de la automatizacion">
+                            </textarea>
+
+                        </div>
+
+                        <input
+                            id="claseTest"
+                            type="hidden"
+                            th:field="*{claseTest}">
+
+                        <input
+                            id="sitioCodigo"
+                            type="hidden"
+                            th:field="*{sitioCodigo}">
+
+                        <input
+                            id="archivoXml"
+                            type="hidden"
+                            th:field="*{archivoXml}">
+
+                        <div class="form-field checkbox-field">
+
+                            <label>
+
+                                <input
+                                    type="checkbox"
+                                    th:field="*{activo}">
+
+                                Automatizacion activa
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-actions">
+
+                        <a href="/automatizaciones/admin"
+                           class="btn secondary">
+                            Cancelar
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="btn">
+
+                            Guardar automatizacion
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script>
+
+    const carpeta =
+        document.getElementById(
+            "carpetaEmpresa"
+        );
+
+    const nombreClase =
+        document.getElementById(
+            "nombreClase"
+        );
+
+    const nombreXml =
+        document.getElementById(
+            "nombreXml"
+        );
+
+    const claseTest =
+        document.getElementById(
+            "claseTest"
+        );
+
+    const sitioCodigo =
+        document.getElementById(
+            "sitioCodigo"
+        );
+
+    const archivoXml =
+        document.getElementById(
+            "archivoXml"
+        );
+
+    const vistaClase =
+        document.getElementById(
+            "vistaClase"
+        );
+
+    const vistaXml =
+        document.getElementById(
+            "vistaXml"
+        );
+
+    function actualizarRutas() {
+
+        const carpetaNormalizada =
+            carpeta.value
+                .trim()
+                .toLowerCase()
+                .replace(/[^a-z0-9_]/g, "");
+
+        let clase =
+            nombreClase.value.trim();
+
+        if (clase.toLowerCase().endsWith(".java")) {
+
+            clase =
+                clase.substring(
+                    0,
+                    clase.length - 5
+                );
+        }
+
+        let xml =
+            nombreXml.value.trim();
+
+        if (
+            xml.length > 0
+            && !xml.toLowerCase().endsWith(".xml")
+        ) {
+
+            xml += ".xml";
+        }
+
+        const rutaClase =
+            carpetaNormalizada && clase
+                ? "com.botengine.framework.automatizaciones."
+                  + carpetaNormalizada
+                  + ".tests."
+                  + clase
+                : "";
+
+        const rutaXml =
+            carpetaNormalizada && xml
+                ? "automatizaciones/xml/"
+                  + carpetaNormalizada
+                  + "/"
+                  + xml
+                : "";
+
+        claseTest.value =
+            rutaClase;
+
+        sitioCodigo.value =
+            carpetaNormalizada
+                .toUpperCase();
+
+        archivoXml.value =
+            rutaXml;
+
+        vistaClase.value =
+            rutaClase;
+
+        vistaXml.value =
+            rutaXml;
+    }
+
+    carpeta.addEventListener(
+        "input",
+        actualizarRutas
+    );
+
+    nombreClase.addEventListener(
+        "input",
+        actualizarRutas
+    );
+
+    nombreXml.addEventListener(
+        "input",
+        actualizarRutas
+    );
+
+    document
+        .getElementById(
+            "formNuevaAutomatizacion"
+        )
+        .addEventListener(
+            "submit",
+            actualizarRutas
+        );
+
+</script>
+
+</body>
+</html>

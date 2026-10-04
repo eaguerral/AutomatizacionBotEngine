@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Configuracion | Bot Engine</title>
+
+    <link rel="stylesheet"
+          href="/css/botengine.css">
+    <script src="/js/theme.js"></script>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="container nav account-nav">
+
+        <div class="nav-left">
+
+            <button
+                type="button"
+                class="back-nav"
+                onclick="window.location.href='/';"
+                title="Regresar"
+                aria-label="Regresar">
+
+                <svg viewBox="0 0 24 24"
+                     aria-hidden="true">
+
+                    <path d="M15 18l-6-6 6-6"/>
+
+                </svg>
+
+            </button>
+
+
+            <a href="/"
+               class="brand">
+                Bot Engine
+            </a>
+
+            <span class="brand-badge">
+                Automation Portal
+            </span>
+
+        </div>
+
+        <nav class="menu">
+
+            <a href="/">
+                Inicio
+            </a>
+
+            <a href="/automatizaciones">
+                Automatizaciones
+            </a>
+
+            <a sec:authorize="hasRole('ADMIN')"
+               href="/usuarios">
+                Usuarios
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<main>
+
+<section class="account-hero">
+
+    <div class="container">
+
+        <span class="brand-badge">
+            Preferencias
+        </span>
+
+        <h1>
+            Configuracion
+        </h1>
+
+        <p class="lead">
+            Personalice la apariencia y consulte
+            informacion de su sesion.
+        </p>
+
+    </div>
+
+</section>
+
+<div class="strip"></div>
+
+
+<section class="account-section">
+
+    <div class="container settings-layout">
+
+        <article class="settings-card">
+
+            <div class="settings-heading">
+
+                <div>
+
+                    <span class="settings-icon">
+                        ◐
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <h2>
+                        Apariencia
+                    </h2>
+
+                    <p>
+                        Seleccione el modo visual del portal.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="theme-options">
+
+                <button
+                    type="button"
+                    class="theme-option"
+                    data-theme-choice="dark">
+
+                    <span class="theme-preview dark-preview"></span>
+
+                    <strong>
+                        Oscuro
+                    </strong>
+
+                    <small>
+                        Tema actual del portal
+                    </small>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="theme-option"
+                    data-theme-choice="light">
+
+                    <span class="theme-preview light-preview"></span>
+
+                    <strong>
+                        Claro
+                    </strong>
+
+                    <small>
+                        Fondo claro y alto contraste
+                    </small>
+
+                </button>
+
+            </div>
+
+            <div class="theme-save-area">
+
+                <div
+                    id="themeStatus"
+                    class="theme-status">
+                </div>
+
+                <button
+                    id="saveThemeButton"
+                    type="button"
+                    class="btn theme-save-button">
+
+                    Guardar apariencia
+
+                </button>
+
+            </div>
+
+        </article>
+
+
+        <article class="settings-card">
+
+            <div class="settings-heading">
+
+                <div>
+
+                    <span class="settings-icon">
+                        ◉
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <h2>
+                        Cuenta
+                    </h2>
+
+                    <p>
+                        Informacion de la cuenta autenticada.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="settings-info">
+
+                <div>
+                    <span>Usuario</span>
+
+                    <strong th:text="${usuario.username}">
+                        usuario
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Nombre</span>
+
+                    <strong th:text="${usuario.nombreCompleto}">
+                        Nombre
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Rol</span>
+
+                    <strong th:text="${usuario.rol.nombre}">
+                        ADMIN
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Estado</span>
+
+                    <strong th:text="${usuario.activo ? 'Activo' : 'Inactivo'}">
+                        Activo
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <a href="/perfil"
+               class="btn settings-profile-button">
+
+                Editar perfil
+
+            </a>
+
+        </article>
+
+
+        <article class="settings-card settings-wide">
+
+            <div class="settings-heading">
+
+                <div>
+
+                    <span class="settings-icon">
+                        i
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <h2>
+                        Informacion del portal
+                    </h2>
+
+                    <p>
+                        Configuracion tecnica de
+                        AutomatizacionBotEngine.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="settings-info settings-info-grid">
+
+                <div>
+                    <span>Seguridad</span>
+                    <strong>Spring Security</strong>
+                </div>
+
+                <div>
+                    <span>Contraseñas</span>
+                    <strong>BCrypt</strong>
+                </div>
+
+                <div>
+                    <span>Persistencia</span>
+                    <strong>PostgreSQL</strong>
+                </div>
+
+                <div>
+                    <span>Automatizacion</span>
+                    <strong>Selenium + TestNG</strong>
+                </div>
+
+            </div>
+
+
+            <p class="settings-note">
+
+                La preferencia de apariencia se almacena
+                localmente en este navegador y se aplica
+                automáticamente a las pantallas del portal.
+
+            </p>
+
+        </article>
+
+    </div>
+
+</section>
+
+</main>
+
+</body>
+</html>

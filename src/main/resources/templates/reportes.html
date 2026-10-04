@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Reportes | Bot Engine</title>
+
+    <link rel="stylesheet"
+          href="/css/botengine.css">
+
+    <script src="/js/theme.js"></script>
+
+</head>
+
+<body>
+
+
+<header class="header">
+
+    <div class="container nav portal-nav">
+
+        <div class="nav-left">
+
+            <a href="/"
+               class="brand">
+                Bot Engine
+            </a>
+
+            <span class="brand-badge">
+                Automation Portal
+            </span>
+
+        </div>
+
+        <nav class="menu">
+
+            <a href="/">
+                Inicio
+            </a>
+
+            <a href="/automatizaciones">
+                Automatizaciones
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <section class="hero">
+
+        <div class="container hero-wrap">
+
+            <div class="hero-text"
+                 style="width:100%;">
+
+                <div class="page-action-row">
+
+                    <span class="brand-badge">
+                        Evidencias de certificación
+                    </span>
+
+                    <a href="/"
+                       class="page-back-link">
+                        &larr; Regresar
+                    </a>
+
+                </div>
+
+                <h1>
+                    Reportes
+                </h1>
+
+                <p class="lead">
+                    Consulte las ejecuciones y su documentación
+                    organizada por empresa.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <div class="strip"></div>
+
+
+    <section class="container reports-page">
+
+
+        <!-- FILTRO EMPRESA -->
+
+        <form
+            method="get"
+            action="/reportes"
+            class="user-form-panel reports-filter">
+
+            <div class="form-field">
+
+                <label for="empresa">
+                    Empresa
+                </label>
+
+                <select
+                    id="empresa"
+                    name="empresa"
+                    onchange="this.form.submit();">
+
+                    <option value="">
+                        Seleccione una empresa
+                    </option>
+
+                    <option
+                        th:each="empresa : ${empresas}"
+                        th:value="${empresa.codigo}"
+                        th:text="${empresa.nombre}"
+                        th:selected="${empresa.codigo == empresaSeleccionada}">
+                    </option>
+
+                </select>
+
+            </div>
+
+        </form>
+
+
+        <!-- EJECUCIONES -->
+
+        <div
+            th:if="${empresaSeleccionada != null and !#strings.isEmpty(empresaSeleccionada)}"
+            class="reports-list">
+
+
+            <details
+                th:each="ejecucion : ${ejecuciones}"
+                class="report-execution"
+                open>
+
+                <summary>
+
+                    <span
+                        th:text="${ejecucion.automatizacion.nombre}">
+                        Automatización
+                    </span>
+
+                    <span
+                        class="status-pill active"
+                        th:text="${ejecucion.estado}">
+                        EXITOSO
+                    </span>
+
+                    <span
+                        th:text="${ejecucion.fechaInicio}">
+                    </span>
+
+                </summary>
+
+
+                <div class="report-execution-content">
+
+                    <p>
+
+                        <strong>
+                            Transacción:
+                        </strong>
+
+                        <span
+                            th:text="${ejecucion.uuid}">
+                        </span>
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Usuario:
+                        </strong>
+
+                        <span
+                            th:text="${ejecucion.usuario.username}">
+                        </span>
+
+                    </p>
+
+
+                    <div class="documentation-grid">
+
+
+                        <!-- REPORTE PDF -->
+
+                        <article
+                            class="documentation-item"
+                            th:if="${ejecucion.rutaReportePdf != null and !#strings.isEmpty(ejecucion.rutaReportePdf)}">
+
+                            <div class="documentation-card-header">
+
+                                <div>
+
+                                    <h3>
+                                        Reporte PDF
+                                    </h3>
+
+                                    <p>
+                                        Evidencia documental de la ejecución.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="report-file-actions">
+
+                                <a
+                                    class="btn secondary"
+                                    target="_blank"
+                                    th:href="@{/documentacion/ejecuciones/{uuid}/pdf(uuid=${ejecucion.uuid})}">
+
+                                    ABRIR PDF
+
+                                </a>
+
+
+                                <a
+                                    class="btn secondary"
+                                    th:href="@{/documentacion/ejecuciones/{uuid}/pdf/descargar(uuid=${ejecucion.uuid})}">
+
+                                    DESCARGAR PDF
+
+                                </a>
+
+                            </div>
+
+
+                            <div class="pdf-preview-wrapper">
+
+                                <iframe
+                                    class="pdf-preview"
+                                    title="Previsualización del reporte PDF"
+                                    loading="lazy"
+                                    th:src="@{/documentacion/ejecuciones/{uuid}/pdf(uuid=${ejecucion.uuid})}">
+                                </iframe>
+
+                            </div>
+
+                        </article>
+
+
+                        <!-- VIDEO -->
+
+                        <article
+                            class="documentation-item"
+                            th:if="${ejecucion.rutaVideo != null and !#strings.isEmpty(ejecucion.rutaVideo)}">
+
+                            <div class="documentation-card-header">
+
+                                <div>
+
+                                    <h3>
+                                        Video de evidencias
+                                    </h3>
+
+                                    <p>
+                                        Grabación de la ejecución realizada por Selenium.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="report-file-actions">
+
+                                <a
+                                    class="btn secondary"
+                                    target="_blank"
+                                    th:href="@{/documentacion/ejecuciones/{uuid}/video(uuid=${ejecucion.uuid})}">
+
+                                    VER VIDEO
+
+                                </a>
+
+
+                                <a
+                                    class="btn secondary"
+                                    th:href="@{/documentacion/ejecuciones/{uuid}/video/descargar(uuid=${ejecucion.uuid})}">
+
+                                    DESCARGAR VIDEO
+
+                                </a>
+
+                            </div>
+
+
+                            <video
+                                controls
+                                preload="metadata"
+                                class="video-preview">
+
+                                <source
+                                    th:src="@{/documentacion/ejecuciones/{uuid}/video(uuid=${ejecucion.uuid})}"
+                                    type="video/mp4">
+
+                            </video>
+
+                        </article>
+
+                    </div>
+
+                </div>
+
+            </details>
+
+
+            <div
+                class="user-form-panel"
+                th:if="${#lists.isEmpty(ejecuciones)}">
+
+                No existen ejecuciones registradas para esta empresa.
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+
+</html>

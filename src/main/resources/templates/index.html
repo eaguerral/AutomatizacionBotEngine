@@ -89,11 +89,7 @@
                     </a>
 
                     <a href="/configuracion"
-                       class="profile-option">
-
-                        <span>Configuracion</span>
-
-                    </a>
+                       class="profile-option">Configuración de cuenta</a>
 
                     <div class="profile-divider"></div>
 
@@ -273,33 +269,6 @@
 
             <div class="cards">
 
-                <article class="card">
-
-                    <svg class="ico"
-                         viewBox="0 0 24 24"
-                         fill="none"
-                         stroke="currentColor"
-                         stroke-width="1.5">
-
-                        <rect x="3" y="4" width="18" height="16" rx="2"/>
-                        <path d="M3 9h18"/>
-                        <path d="M8 4v16"/>
-
-                    </svg>
-
-                    <h5>Empresas</h5>
-
-                    <p>
-                        Administracion de las empresas y aplicaciones
-                        disponibles para cada usuario del portal.
-                    </p>
-
-                    <span class="card-subtitle">
-                        Gestion de acceso por empresa
-                    </span>
-
-                </article>
-
 
                 <article class="card">
 
@@ -357,7 +326,14 @@
                         Control centralizado de ejecucion
                     </span>
 
-                </article>
+                
+                    <a href="/ejecuciones"
+                       class="btn module-button">
+
+                        Ver ejecuciones
+
+                    </a>
+</article>
 
 
                 <article class="card">
@@ -387,7 +363,12 @@
                         Evidencia tecnica de certificacion
                     </span>
 
-                </article>
+                
+                    <a href="/reportes"
+                       class="btn">
+                        Abrir reportes
+                    </a>
+</article>
 
 
                 <article class="card">
@@ -415,7 +396,14 @@
                         Trazabilidad de pruebas
                     </span>
 
-                </article>
+                
+                    <a href="/historial"
+                       class="btn module-button">
+
+                        Ver historial
+
+                    </a>
+</article>
 
 
                 <article class="card">
@@ -452,6 +440,48 @@
                     </a>
 
                 </article>
+                <article class="card"
+                         sec:authorize="hasRole('ADMIN')">
+
+                    <svg class="ico"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.5">
+
+                        <circle cx="12"
+                                cy="12"
+                                r="3"/>
+
+                        <circle cx="12"
+                                cy="12"
+                                r="8"/>
+
+                    </svg>
+
+                    <h5>
+                        Configuracion
+                    </h5>
+
+                    <p>
+                        Administración de empresas,
+                        clases, credenciales y recursos
+                        utilizados por el framework.
+                    </p>
+
+                    <span class="card-subtitle">
+                        Parámetros del sistema
+                    </span>
+
+                    <a href="/administracion/configuracion"
+                       class="btn module-button">
+
+                        Abrir configuración del framework
+
+                    </a>
+
+                </article>
+
 
             </div>
 

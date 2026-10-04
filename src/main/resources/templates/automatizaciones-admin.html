@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Administrar automatizaciones | Bot Engine</title>
+
+    <link rel="stylesheet"
+          href="/css/botengine.css">
+
+    <script src="/js/theme.js"></script>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="container nav portal-nav">
+
+        <div class="nav-left">
+
+            <button
+                type="button"
+                class="back-nav"
+                onclick="window.location.href='/automatizaciones';"
+                title="Regresar"
+                aria-label="Regresar">
+
+                <svg viewBox="0 0 24 24"
+                     aria-hidden="true">
+
+                    <path d="M15 18l-6-6 6-6"/>
+
+                </svg>
+
+            </button>
+
+            <details class="profile-menu">
+
+                <summary
+                    class="profile-trigger"
+                    title="Perfil de usuario">
+
+                    <svg viewBox="0 0 24 24"
+                         aria-hidden="true">
+
+                        <circle
+                            cx="12"
+                            cy="8"
+                            r="4">
+                        </circle>
+
+                        <path
+                            d="M4 20c0-4.1 3.6-7 8-7s8 2.9 8 7">
+                        </path>
+
+                    </svg>
+
+                </summary>
+
+                <div class="profile-dropdown">
+
+                    <div class="profile-summary">
+
+                        <div class="profile-small-avatar">
+
+                            <svg viewBox="0 0 24 24"
+                                 aria-hidden="true">
+
+                                <circle
+                                    cx="12"
+                                    cy="8"
+                                    r="4">
+                                </circle>
+
+                                <path
+                                    d="M4 20c0-4.1 3.6-7 8-7s8 2.9 8 7">
+                                </path>
+
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <strong
+                                sec:authentication="name">
+                                usuario
+                            </strong>
+
+                            <small>
+                                Cuenta del portal
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="profile-divider"></div>
+
+                    <a href="/perfil"
+                       class="profile-option">
+                        Editar perfil
+                    </a>
+
+                    <a href="/configuracion"
+                       class="profile-option">
+                        Configuracion
+                    </a>
+
+                    <div class="profile-divider"></div>
+
+                    <form
+                        th:action="@{/logout}"
+                        method="post">
+
+                        <button
+                            type="submit"
+                            class="profile-option profile-logout">
+                            Cerrar sesion
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </details>
+
+            <a href="/"
+               class="brand">
+                Bot Engine
+            </a>
+
+            <span class="brand-badge">
+                Automation Portal
+            </span>
+
+        </div>
+
+        <nav class="menu">
+
+            <a href="/">
+                Inicio
+            </a>
+
+            <a href="/automatizaciones">
+                Automatizaciones
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+<main>
+
+    <section class="hero">
+
+        <div class="container hero-wrap">
+
+            <div class="hero-text">
+
+                <span class="brand-badge">
+                    Administracion
+                </span>
+
+                <h1>
+                    Automatizaciones
+                </h1>
+
+                <p class="lead">
+                    Gestion del catalogo de pruebas funcionales
+                    disponibles en AutomatizacionBotEngine.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="strip"></div>
+
+    <section>
+
+        <div class="container">
+
+            <div class="users-panel">
+
+                <div class="users-panel-header">
+
+                    <div>
+
+                        <h2>
+                            Automatizaciones registradas
+                        </h2>
+
+                        <p>
+                            Catalogo persistido en PostgreSQL
+                            y vinculado con las clases TestNG
+                            del framework.
+                        </p>
+
+                    </div>
+
+                    <div class="users-panel-actions">
+
+                        <a href="/automatizaciones/admin/nueva"
+                           class="btn">
+                            Nueva automatizacion
+                        </a>
+
+                        <span class="brand-badge"
+                              th:text="${#lists.size(automatizaciones) + ' automatizacion(es)'}">
+                            0 automatizaciones
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="users-table-wrap">
+
+                    <table class="users-table">
+
+                        <thead>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Codigo</th>
+                            <th>Nombre</th>
+                            <th>Clase TestNG</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        <tr th:each="automatizacion : ${automatizaciones}">
+
+                            <td th:text="${automatizacion.id}">
+                                1
+                            </td>
+
+                            <td>
+                                <span class="role-pill"
+                                      th:text="${automatizacion.codigo}">
+                                    LOGIN_TEST
+                                </span>
+                            </td>
+
+                            <td th:text="${automatizacion.nombre}">
+                                LoginTest
+                            </td>
+
+                            <td th:text="${automatizacion.claseTest}">
+                                com.botengine.framework.tests.LoginTest
+                            </td>
+
+                            <td>
+
+                                <span
+                                    th:class="${automatizacion.activo ? 'status-pill active' : 'status-pill inactive'}"
+                                    th:text="${automatizacion.activo ? 'Activo' : 'Inactivo'}">
+
+                                    Activo
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <a th:href="@{/automatizaciones/admin/{id}/editar(id=${automatizacion.id})}"
+                                   class="btn secondary">
+
+                                    Editar
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        <tr th:if="${#lists.isEmpty(automatizaciones)}">
+
+                            <td colspan="6">
+                                No existen automatizaciones registradas.
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer class="footer">
+
+    <div class="footer-top">
+
+        <div class="brand">
+            Bot Engine
+        </div>
+
+        <p>
+            AutomatizacionBotEngine
+        </p>
+
+    </div>
+
+</footer>
+
+</body>
+</html>

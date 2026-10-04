@@ -21,6 +21,7 @@ public class SecurityConfig {
 
         http
             .authorizeHttpRequests(auth -> auth
+
                 .requestMatchers(
                     "/login",
                     "/css/**",
@@ -30,10 +31,16 @@ public class SecurityConfig {
                 ).permitAll()
 
                 .requestMatchers(
-                    "/usuarios/**"
+                    "/usuarios/**",
+                    "/automatizaciones/admin/**",
+                    "/asignaciones/**", "/insumos/**", "/administracion/configuracion/**"
                 ).hasRole("ADMIN")
 
                 .anyRequest().authenticated()
+            )
+
+            .headers(headers -> headers
+                .frameOptions(frameOptions -> frameOptions.sameOrigin())
             )
             .formLogin(form -> form
                 .loginPage("/login")
@@ -42,6 +49,7 @@ public class SecurityConfig {
                 .failureUrl("/login?error")
                 .permitAll()
             )
+
             .logout(logout -> logout
                 .logoutSuccessUrl("/login?logout")
                 .permitAll()
@@ -61,19 +69,28 @@ public class SecurityConfig {
 
         return username -> {
 
-            Usuario usuario = usuarioRepository
-                    .findByUsername(username)
-                    .orElseThrow(() ->
-                            new UsernameNotFoundException(
-                                    "Usuario no encontrado."
-                            )
-                    );
+            Usuario usuario =
+                    usuarioRepository
+                            .findByUsername(username)
+                            .orElseThrow(() ->
+                                    new UsernameNotFoundException(
+                                            "Usuario no encontrado."
+                                    )
+                            );
 
             return User.builder()
-                    .username(usuario.getUsername())
-                    .password(usuario.getPassword())
-                    .roles(usuario.getRol().getNombre())
-                    .disabled(!usuario.isActivo())
+                    .username(
+                            usuario.getUsername()
+                    )
+                    .password(
+                            usuario.getPassword()
+                    )
+                    .roles(
+                            usuario.getRol().getNombre()
+                    )
+                    .disabled(
+                            !usuario.isActivo()
+                    )
                     .build();
         };
     }

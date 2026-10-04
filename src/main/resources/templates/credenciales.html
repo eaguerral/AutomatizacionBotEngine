@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Credenciales | Bot Engine</title>
+
+    <link rel="stylesheet"
+          href="/css/botengine.css">
+
+    <script src="/js/theme.js"></script>
+
+</head>
+
+<body>
+
+<header class="header">
+
+<div class="container nav portal-nav">
+
+    <div class="nav-left">
+
+        <a href="/"
+           class="brand">
+            Bot Engine
+        </a>
+
+        <span class="brand-badge">
+            Automation Portal
+        </span>
+
+    </div>
+
+</div>
+
+</header>
+
+<main>
+
+<section class="hero">
+
+<div class="container hero-wrap">
+
+<div class="hero-text"
+     style="width:100%;">
+
+    <div class="page-action-row">
+
+        <span class="brand-badge">
+            Configuración
+        </span>
+
+        <a href="/administracion/configuracion"
+           class="page-back-link">
+            &larr; Regresar
+        </a>
+
+    </div>
+
+    <h1>
+        Credenciales
+    </h1>
+
+    <p class="lead">
+        Administración segura de cuentas utilizadas
+        por las automatizaciones de cada empresa.
+    </p>
+
+</div>
+
+</div>
+
+</section>
+
+<div class="strip"></div>
+
+<section>
+
+<div class="container">
+
+<div th:if="${error != null}"
+     class="form-error"
+     th:text="${error}">
+</div>
+
+<div th:if="${exito != null}"
+     class="form-success"
+     th:text="${exito}">
+</div>
+
+<div class="users-panel">
+
+    <div class="module-toolbar">
+
+        <div class="module-search">
+
+            <input
+                id="buscarCredencial"
+                type="search"
+                placeholder="Buscar por empresa, alias, URL o estado...">
+
+        </div>
+
+        <button
+            id="btnAgregarCredencial"
+            type="button"
+            class="btn">
+
+            + AGREGAR CREDENCIAL
+
+        </button>
+
+    </div>
+
+    <div id="credencialFormPanel"
+         class="module-form-panel"
+         th:classappend="${mostrarFormulario} ? ' is-open' : ''">
+
+        <h2 th:text="${credencialForm.id != null ? 'Editar credencial' : 'Nueva credencial'}">
+            Nueva credencial
+        </h2>
+
+        <form
+            th:action="@{/administracion/configuracion/credenciales/guardar}"
+            th:object="${credencialForm}"
+            method="post"
+            autocomplete="off">
+
+            <input
+                type="hidden"
+                th:field="*{id}">
+
+            <div class="form-grid">
+
+                <div class="form-field">
+
+                    <label>
+                        Empresa
+                    </label>
+
+                    <select
+                        th:field="*{empresaId}"
+                        required>
+
+                        <option value="">
+                            Seleccione una empresa
+                        </option>
+
+                        <option
+                            th:each="empresa : ${empresas}"
+                            th:value="${empresa.id}"
+                            th:text="${empresa.nombre}">
+                        </option>
+
+                    </select>
+
+                    <small>
+                        El código de la empresa será utilizado como sitio de ejecución.
+                    </small>
+
+                </div>
+
+                <div class="form-field">
+
+                    <label>
+                        Alias
+                    </label>
+
+                    <input
+                        type="text"
+                        th:field="*{alias}"
+                        required
+                        placeholder="ZENTRAMED_USUARIO_01">
+
+                    <small>
+                        Identificador técnico único dentro de la empresa.
+                    </small>
+
+                </div>
+
+                <div class="form-field">
+
+                    <label>
+                        URL
+                    </label>
+
+                    <input
+                        type="url"
+                        th:field="*{url}"
+                        required
+                        placeholder="https://sistema.empresa.com/">
+
+                </div>
+
+                <div class="form-field">
+
+                    <label>
+                        Prioridad
+                    </label>
+
+                    <input
+                        type="number"
+                        th:field="*{prioridad}"
+                        min="1"
+                        required>
+
+                    <small>
+                        La prioridad 1 se intentará primero.
+                    </small>
+
+                </div>
+
+                <div class="form-field">
+
+                    <label>
+                        Usuario
+                    </label>
+
+                    <input
+                        type="text"
+                        th:field="*{username}"
+                        autocomplete="off"
+                        th:placeholder="${credencialForm.usuarioConfigurado ? '••••••••••••' : 'Usuario o correo'}">
+
+                    <small
+                        th:if="${credencialForm.usuarioConfigurado}"
+                        class="credential-status-ok">
+                        ✓ Usuario configurado
+                    </small>
+
+                    <small th:if="${credencialForm.id != null}">
+                        Escriba un nuevo valor únicamente si desea cambiarlo.
+                    </small>
+
+                </div>
+
+                <div class="form-field">
+
+                    <label>
+                        Contraseña
+                    </label>
+
+                    <div class="password-field-wrap">
+
+                        <input
+                            id="passwordInput"
+                            type="password"
+                            th:field="*{password}"
+                            autocomplete="new-password"
+                            th:placeholder="${credencialForm.passwordConfigurado ? '••••••••••••' : 'Contraseña'}">
+
+                        <button
+                            id="btnTogglePassword"
+                            type="button"
+                            class="password-toggle-btn">
+
+                            MOSTRAR
+
+                        </button>
+
+                    </div>
+
+                    <small
+                        th:if="${credencialForm.passwordConfigurado}"
+                        class="credential-status-ok">
+                        ✓ Contraseña configurada
+                    </small>
+
+                    <small th:if="${credencialForm.id != null}">
+                        Escriba una nueva contraseña únicamente si desea cambiarla.
+                    </small>
+
+                </div>
+
+                <div class="form-field credential-active-field">
+
+                    <label>
+                        Estado
+                    </label>
+
+                    <label class="credential-active-control">
+
+                        <input
+                            type="checkbox"
+                            th:field="*{activo}">
+
+                        <span>
+                            Credencial activa
+                        </span>
+
+                    </label>
+
+                    <small>
+                        Permite utilizar esta cuenta durante las ejecuciones.
+                    </small>
+
+                </div>
+
+            </div>
+
+            <div class="form-actions">
+
+                <a href="/administracion/configuracion/credenciales"
+                   class="btn secondary">
+
+                    CANCELAR
+
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn">
+
+                    GUARDAR CREDENCIAL
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <div class="table-shell">
+
+        <table class="data-table">
+
+            <thead>
+
+            <tr>
+                <th>Empresa</th>
+                <th>Alias</th>
+                <th>URL</th>
+                <th>Prioridad</th>
+                <th>Credencial</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+
+            </thead>
+
+            <tbody id="tablaCredenciales">
+
+            <tr th:each="cuenta : ${credenciales}"
+                th:attr="data-search=${cuenta.sitioCodigo + ' ' + cuenta.alias + ' ' + (cuenta.url != null ? cuenta.url : '') + ' ' + (cuenta.activo ? 'activa' : 'inactiva')}">
+
+                <td th:text="${nombresEmpresas[cuenta.sitioCodigo] != null ? nombresEmpresas[cuenta.sitioCodigo] : cuenta.sitioCodigo}">
+                </td>
+
+                <td class="mono-cell"
+                    th:text="${cuenta.alias}">
+                </td>
+
+                <td th:text="${cuenta.url != null ? cuenta.url : 'Configurada mediante entorno'}">
+                </td>
+
+                <td th:text="${cuenta.prioridad}">
+                </td>
+
+                <td>
+
+                    <span class="brand-badge"
+                          th:text="${cuenta.usuarioCifrado != null and cuenta.passwordCifrado != null ? 'CIFRADA' : 'ENV'}">
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <span class="brand-badge"
+                          th:text="${cuenta.activo ? 'ACTIVA' : 'INACTIVA'}">
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <div class="action-buttons">
+
+                        <a
+                            th:href="@{/administracion/configuracion/credenciales(editar=${cuenta.id})}"
+                            class="btn secondary btn-small">
+
+                            EDITAR
+
+                        </a>
+
+                        <form
+                            th:action="@{/administracion/configuracion/credenciales/{id}/estado(id=${cuenta.id})}"
+                            method="post">
+
+                            <button
+                                type="submit"
+                                class="btn secondary btn-small"
+                                th:text="${cuenta.activo ? 'INACTIVAR' : 'ACTIVAR'}">
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+            <tr th:if="${credenciales == null or credenciales.isEmpty()}">
+
+                <td colspan="7"
+                    class="empty-state">
+
+                    No existen credenciales registradas.
+
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+<script>
+
+const panel =
+    document.getElementById(
+        "credencialFormPanel"
+    );
+
+const passwordInput =
+    document.getElementById(
+        "passwordInput"
+    );
+
+const btnTogglePassword =
+    document.getElementById(
+        "btnTogglePassword"
+    );
+
+if (
+    passwordInput
+    && btnTogglePassword
+) {
+
+    btnTogglePassword.addEventListener(
+        "click",
+        function () {
+
+            const oculto =
+                passwordInput.type === "password";
+
+            passwordInput.type =
+                oculto
+                    ? "text"
+                    : "password";
+
+            btnTogglePassword.textContent =
+                oculto
+                    ? "OCULTAR"
+                    : "MOSTRAR";
+        }
+    );
+}
+
+document
+    .getElementById(
+        "btnAgregarCredencial"
+    )
+    .addEventListener(
+        "click",
+        function () {
+
+            panel.classList.add(
+                "is-open"
+            );
+
+            panel.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+    );
+
+document
+    .getElementById(
+        "buscarCredencial"
+    )
+    .addEventListener(
+        "input",
+        function (event) {
+
+            const valor =
+                event.target.value
+                    .toLowerCase()
+                    .trim();
+
+            document
+                .querySelectorAll(
+                    "#tablaCredenciales tr[data-search]"
+                )
+                .forEach(
+                    row => {
+
+                        row.style.display =
+                            row.dataset.search
+                                .toLowerCase()
+                                .includes(valor)
+                                ? ""
+                                : "none";
+                    }
+                );
+        }
+    );
+
+</script>
+
+</body>
+</html>

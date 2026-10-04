@@ -5,42 +5,105 @@ import org.testng.IConfigurationListener;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
-public class ScreenshotListener implements ITestListener, IConfigurationListener {
+/**
+ * Genera evidencia adicional solamente cuando ocurre un fallo.
+ *
+ * Las evidencias exitosas se registran durante cada paso
+ * funcional mediante EvidenciaPaso.
+ */
+public class ScreenshotListener
+        implements ITestListener, IConfigurationListener {
 
-    @Override
-    public void onTestFailure(ITestResult result) {
-        capturar(result, "fallo");
+    private final String directorioCapturas;
+
+    public ScreenshotListener() {
+
+        this.directorioCapturas =
+                null;
+    }
+
+    public ScreenshotListener(
+            String directorioCapturas) {
+
+        this.directorioCapturas =
+                directorioCapturas;
     }
 
     @Override
-    public void onTestSuccess(ITestResult result) {
-        capturar(result, "exito");
+    public void onTestFailure(
+            ITestResult result) {
+
+        capturarFallo(
+                result,
+                "Error durante la ejecucion"
+        );
     }
 
     @Override
-    public void onConfigurationFailure(ITestResult result) {
-        capturar(result, "configuracion_fallida");
+    public void onTestSuccess(
+            ITestResult result) {
+
+        /*
+         * No se genera una captura adicional.
+         * Los pasos exitosos ya fueron documentados individualmente.
+         */
     }
 
-    private void capturar(ITestResult result, String tipo) {
+    @Override
+    public void onConfigurationFailure(
+            ITestResult result) {
 
-        Object instancia = result.getInstance();
+        capturarFallo(
+                result,
+                "Error de configuracion"
+        );
+    }
 
-        if (instancia instanceof BaseTest baseTest
-                && baseTest.getDriver() != null) {
+    private void capturarFallo(
+            ITestResult result,
+            String titulo) {
 
-            String nombre =
-                    result.getMethod().getMethodName() + "_" + tipo;
+        Object instancia =
+                result.getInstance();
 
-            String evidencia =
-                    ScreenshotUtil.takeScreenshot(
+        if (!(instancia instanceof BaseTest baseTest)
+                || baseTest.getDriver() == null) {
+
+            return;
+        }
+
+        String evidencia;
+
+        if (EvidenciaPaso.activa()) {
+
+            evidencia =
+                    EvidenciaPaso.capturar(
                             baseTest.getDriver(),
-                            nombre
+                            titulo
                     );
 
-            System.out.println(
-                    "Evidencia generada: " + evidencia
-            );
+        } else if (directorioCapturas != null
+                && !directorioCapturas.isBlank()) {
+
+            evidencia =
+                    ScreenshotUtil.takeScreenshot(
+                            baseTest.getDriver(),
+                            "error_ejecucion",
+                            directorioCapturas
+                    );
+
+        } else {
+
+            evidencia =
+                    ScreenshotUtil.takeScreenshot(
+                            baseTest.getDriver(),
+                            "error_ejecucion"
+                    );
         }
+
+        System.out.println(
+                "Evidencia de error generada: "
+                + evidencia
+        );
     }
 }

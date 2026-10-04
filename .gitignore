@@ -21,3 +21,9 @@ pom.xml.backup
 pom.xml.paso4.backup
 
 config/application.properties
+
+storage/plantillas-evidencia/
+
+storage/evidencias/
+storage/selenium-videos/
+scripts/iniciar-windows.antes-selenium.ps1.backup

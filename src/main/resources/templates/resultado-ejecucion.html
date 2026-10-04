@@ -1,11 +1,22 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>Resultado | Bot Engine</title>
-    <link rel="stylesheet" href="/css/botengine.css">
+
+    <link rel="stylesheet"
+          href="/css/botengine.css">
+
     <script src="/js/theme.js"></script>
+
 </head>
 
 <body>
@@ -15,122 +26,6 @@
     <div class="container nav portal-nav">
 
         <div class="nav-left">
-
-            <button
-                type="button"
-                class="back-nav"
-                onclick="window.location.href='/';"
-                title="Regresar"
-                aria-label="Regresar">
-
-                <svg viewBox="0 0 24 24"
-                     aria-hidden="true">
-
-                    <path d="M15 18l-6-6 6-6"/>
-
-                </svg>
-
-            </button>
-
-
-            <details class="profile-menu">
-
-                <summary
-                    class="profile-trigger"
-                    title="Perfil de usuario">
-
-                    <svg
-                        viewBox="0 0 24 24"
-                        aria-hidden="true">
-
-                        <circle
-                            cx="12"
-                            cy="8"
-                            r="4">
-                        </circle>
-
-                        <path
-                            d="M4 20c0-4.1 3.6-7 8-7s8 2.9 8 7">
-                        </path>
-
-                    </svg>
-
-                </summary>
-
-                <div class="profile-dropdown">
-
-                    <div class="profile-summary">
-
-                        <div class="profile-small-avatar">
-
-                            <svg
-                                viewBox="0 0 24 24"
-                                aria-hidden="true">
-
-                                <circle
-                                    cx="12"
-                                    cy="8"
-                                    r="4">
-                                </circle>
-
-                                <path
-                                    d="M4 20c0-4.1 3.6-7 8-7s8 2.9 8 7">
-                                </path>
-
-                            </svg>
-
-                        </div>
-
-                        <div>
-
-                            <strong
-                                sec:authentication="name">
-                                usuario
-                            </strong>
-
-                            <small>
-                                Cuenta del portal
-                            </small>
-
-                        </div>
-
-                    </div>
-
-                    <div class="profile-divider"></div>
-
-                    <a href="/perfil"
-                       class="profile-option">
-
-                        <span>Editar perfil</span>
-
-                    </a>
-
-                    <a href="/configuracion"
-                       class="profile-option">
-
-                        <span>Configuracion</span>
-
-                    </a>
-
-                    <div class="profile-divider"></div>
-
-                    <form
-                        th:action="@{/logout}"
-                        method="post">
-
-                        <button
-                            type="submit"
-                            class="profile-option profile-logout">
-
-                            Cerrar sesion
-
-                        </button>
-
-                    </form>
-
-                </div>
-
-            </details>
 
             <a href="/"
                class="brand">
@@ -145,20 +40,12 @@
 
         <nav class="menu">
 
-            <a href="/#inicio">
+            <a href="/">
                 Inicio
-            </a>
-
-            <a href="/#modulos">
-                Modulos
             </a>
 
             <a href="/automatizaciones">
                 Automatizaciones
-            </a>
-
-            <a href="/#estado">
-                Estado
             </a>
 
         </nav>
@@ -167,70 +54,326 @@
 
 </header>
 
+
 <main>
 
     <section class="hero">
 
+        <div class="container hero-wrap">
+
+            <div class="hero-text"
+                 style="width:100%;">
+
+                <div class="page-action-row">
+
+                    <span class="brand-badge">
+                        Resultado
+                    </span>
+
+                    <a href="/automatizaciones"
+                       class="page-back-link">
+                        &larr; Regresar
+                    </a>
+
+                </div>
+
+                <h1>
+                    Resultado de automatización
+                </h1>
+
+                <p class="lead">
+                    Resultado persistido de la ejecución funcional realizada desde el portal.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <div class="strip"></div>
+
+
+    <section>
+
         <div class="container">
 
-            <h1>
-                Resultado de automatizacion
-            </h1>
+            <div class="users-panel">
 
-            <div class="cards">
+                <div class="users-panel-header">
 
-                <article class="card">
+                    <div>
 
-                    <h5 th:text="${resultado.automatizacion}">
-                        Automatizacion
-                    </h5>
+                        <h2
+                            th:text="${resultado.automatizacion.nombre}">
+                            Automatización
+                        </h2>
 
-                    <p>
-                        Identificador:
-                    </p>
+                        <p
+                            th:text="${resultado.automatizacion.codigo}">
+                            LOGIN_TEST
+                        </p>
 
-                    <span
-                        class="brand-badge"
-                        th:text="${resultado.id}">
-                    </span>
-
-                    <p>
-                        Estado:
-                    </p>
+                    </div>
 
                     <span
-                        class="brand-badge"
+                        th:class="${resultado.estado.name() == 'EXITOSO'
+                        ? 'status-pill active'
+                        : 'status-pill inactive'}"
                         th:text="${resultado.estado}">
+
+                        EXITOSO
+
                     </span>
 
-                    <p>
-                        Fecha de inicio:
-                    </p>
+                </div>
 
-                    <span
-                        th:text="${resultado.fechaInicio}">
-                    </span>
 
-                    <p>
-                        Fecha de finalizacion:
-                    </p>
+                <div class="form-grid">
 
-                    <span
-                        th:text="${resultado.fechaFin}">
-                    </span>
+                    <div class="form-field">
 
-                    <p>
-                        Duracion:
-                    </p>
+                        <label>
+                            UUID
+                        </label>
 
-                    <span>
-                        <strong
-                            th:text="${resultado.duracionMilisegundos}">
-                        </strong>
-                        ms
-                    </span>
+                        <input
+                            type="text"
+                            th:value="${resultado.uuid}"
+                            readonly>
 
-                </article>
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label>
+                            Usuario
+                        </label>
+
+                        <input
+                            type="text"
+                            th:value="${resultado.usuario.username}"
+                            readonly>
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label>
+                            Fecha de inicio
+                        </label>
+
+                        <input
+                            type="text"
+                            th:value="${resultado.fechaInicio}"
+                            readonly>
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label>
+                            Fecha de finalización
+                        </label>
+
+                        <input
+                            type="text"
+                            th:value="${resultado.fechaFin}"
+                            readonly>
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label>
+                            Duración
+                        </label>
+
+                        <input
+                            type="text"
+                            th:value="${resultado.duracionMilisegundos + ' ms'}"
+                            readonly>
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label>
+                            Detalle
+                        </label>
+
+                        <textarea
+                            rows="3"
+                            readonly
+                            th:text="${resultado.detalle}">
+                        </textarea>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BOTENGINE-DOCUMENTACION-RESULTADO-V2 -->
+
+                <div class="result-documentation-card">
+
+                    <div class="result-documentation-header">
+
+                        <div>
+
+                            <h3>
+                                Documentación
+                            </h3>
+
+                            <p>
+                                Consulte o descargue los archivos generados
+                                durante esta ejecución.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="result-documentation-files">
+
+
+                        <!-- PDF -->
+
+                        <div
+                            class="result-documentation-file"
+                            th:if="${resultado.rutaReportePdf != null and !#strings.isEmpty(resultado.rutaReportePdf)}">
+
+                            <div>
+
+                                <span class="documentation-file-type">
+                                    PDF
+                                </span>
+
+                                <strong>
+                                    Reporte de ejecución
+                                </strong>
+
+                            </div>
+
+                            <div class="documentation-actions">
+
+                                <a
+                                    class="btn secondary"
+                                    target="_blank"
+                                    th:href="@{/documentacion/ejecuciones/{uuid}/pdf(uuid=${resultado.uuid})}">
+
+                                    VER REPORTE
+
+                                </a>
+
+                                <a
+                                    class="btn secondary"
+                                    th:href="@{/documentacion/ejecuciones/{uuid}/pdf/descargar(uuid=${resultado.uuid})}">
+
+                                    DESCARGAR PDF
+
+                                </a>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- VIDEO -->
+
+                        <div
+                            class="result-documentation-file"
+                            th:if="${resultado.rutaVideo != null and !#strings.isEmpty(resultado.rutaVideo)}">
+
+                            <div>
+
+                                <span class="documentation-file-type">
+                                    MP4
+                                </span>
+
+                                <strong>
+                                    Video de la ejecución
+                                </strong>
+
+                            </div>
+
+                            <div class="documentation-actions">
+
+                                <a
+                                    class="btn secondary"
+                                    target="_blank"
+                                    th:href="@{/documentacion/ejecuciones/{uuid}/video(uuid=${resultado.uuid})}">
+
+                                    VER VIDEO
+
+                                </a>
+
+                                <a
+                                    class="btn secondary"
+                                    th:href="@{/documentacion/ejecuciones/{uuid}/video/descargar(uuid=${resultado.uuid})}">
+
+                                    DESCARGAR VIDEO
+
+                                </a>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- WORD -->
+
+                        <div
+                            class="result-documentation-file"
+                            th:if="${resultado.rutaReporteWord != null and !#strings.isEmpty(resultado.rutaReporteWord)}">
+
+                            <div>
+
+                                <span class="documentation-file-type">
+                                    DOCX
+                                </span>
+
+                                <strong>
+                                    Reporte editable
+                                </strong>
+
+                            </div>
+
+                            <div class="documentation-actions">
+
+                                <a
+                                    class="btn secondary"
+                                    th:href="@{/documentacion/ejecuciones/{uuid}/word(uuid=${resultado.uuid})}">
+
+                                    DESCARGAR WORD
+
+                                </a>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="documentation-empty"
+                            th:if="${resultado.rutaReportePdf == null
+                            and resultado.rutaVideo == null
+                            and resultado.rutaReporteWord == null}">
+
+                            La ejecución no tiene documentación disponible.
+
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 
@@ -241,4 +384,5 @@
 </main>
 
 </body>
+
 </html>

@@ -96,6 +96,6 @@ public class CuentaController {
                 )
         );
 
-        return "configuracion";
+        return "configuracion-cuenta";
     }
 }
