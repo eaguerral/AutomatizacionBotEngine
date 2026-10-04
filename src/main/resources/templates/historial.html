@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Historial | Bot Engine</title>
+
+    <link rel="stylesheet"
+          href="/css/botengine.css">
+
+    <script src="/js/theme.js"></script>
+
+</head>
+
+<body>
+
+<header class="header">
+
+<div class="container nav portal-nav">
+
+<div class="nav-left">
+
+    <a href="/"
+       class="brand">
+        Bot Engine
+    </a>
+
+    <span class="brand-badge">
+        Automation Portal
+    </span>
+
+</div>
+
+</div>
+
+</header>
+
+<main>
+
+<section class="hero">
+
+<div class="container hero-wrap">
+
+<div class="hero-text"
+     style="width:100%;">
+
+    <div class="page-action-row">
+
+        <span class="brand-badge">
+            Trazabilidad
+        </span>
+
+        <a href="/"
+           class="page-back-link">&larr; Regresar</a>
+
+    </div>
+
+    <h1>
+        Historial
+    </h1>
+
+    <p class="lead">
+        Registro cronológico de todas las ejecuciones
+        almacenadas en PostgreSQL.
+    </p>
+
+</div>
+
+</div>
+
+</section>
+
+<div class="strip"></div>
+
+<section>
+
+<div class="container" history-container>
+
+<div class="users-panel history-panel">
+
+    <div class="module-toolbar">
+
+        <div>
+
+            <h2>
+                Historial de ejecuciones
+            </h2>
+
+            <p>
+                Los resultados se obtienen directamente
+                de la base de datos.
+            </p>
+
+        </div>
+
+        <a href="/ejecuciones"
+           class="btn secondary">
+
+            VER EJECUCIONES
+
+        </a>
+
+    </div>
+
+    <div class="module-toolbar">
+
+        <div class="module-search">
+
+            <input
+                id="buscarHistorial"
+                type="search"
+                placeholder="Buscar por UUID, automatización, usuario o estado...">
+
+        </div>
+
+    </div>
+
+    <div class="table-shell">
+
+    <table class="data-table"
+           style="min-width:1250px;">
+
+        <thead>
+
+        <tr>
+            <th>ID</th>
+            <th>UUID</th>
+            <th>Automatización</th>
+            <th>Usuario</th>
+            <th>Estado</th>
+            <th>Inicio</th>
+            <th>Finalización</th>
+            <th>Duración</th>
+            <th>Detalle</th>
+        </tr>
+
+        </thead>
+
+        <tbody id="tablaHistorial">
+
+        <tr th:each="ejecucion : ${ejecuciones}"
+            th:attr="data-search=${ejecucion.uuid + ' ' + ejecucion.automatizacion.codigo + ' ' + ejecucion.usuario.username + ' ' + ejecucion.estado}">
+
+            <td th:text="${ejecucion.id}">
+            </td>
+
+            <td class="mono-cell nowrap">
+
+                <span
+                    th:title="${ejecucion.uuid}"
+                    th:text="${#strings.substring(ejecucion.uuid,0,8) + 'â€¦'}">
+                </span>
+
+            </td>
+
+            <td class="mono-cell"
+                th:text="${ejecucion.automatizacion.codigo}">
+            </td>
+
+            <td th:text="${ejecucion.usuario.username}">
+            </td>
+
+            <td>
+
+                <span class="brand-badge"
+                      th:text="${ejecucion.estado}">
+                </span>
+
+            </td>
+
+            <td class="nowrap"
+                th:text="${ejecucion.fechaInicio != null ? #strings.substring(#strings.replace(ejecucion.fechaInicio.toString(), 'T', ' '),0,19) : '-'}">
+            </td>
+
+            <td class="nowrap"
+                th:text="${ejecucion.fechaFin != null ? #strings.substring(#strings.replace(ejecucion.fechaFin.toString(), 'T', ' '),0,19) : '-'}">
+            </td>
+
+            <td class="nowrap"
+                th:text="${ejecucion.duracionMilisegundos != null ? ejecucion.duracionMilisegundos + ' ms' : '-'}">
+            </td>
+
+            <td class="detail-cell">
+
+                <span
+                    th:title="${ejecucion.detalle}"
+                    th:text="${ejecucion.detalle != null ? ejecucion.detalle : '-'}">
+                </span>
+
+            </td>
+
+        </tr>
+
+        <tr th:if="${ejecuciones == null or ejecuciones.isEmpty()}">
+
+            <td colspan="9"
+                class="empty-state">
+
+                No existen ejecuciones registradas.
+
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+    </div>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+<script>
+
+document
+    .getElementById(
+        "buscarHistorial"
+    )
+    .addEventListener(
+        "input",
+        function (event) {
+
+            const valor =
+                event.target.value
+                    .toLowerCase();
+
+            document
+                .querySelectorAll(
+                    "#tablaHistorial tr[data-search]"
+                )
+                .forEach(row => {
+
+                    row.style.display =
+                        row.dataset.search
+                            .toLowerCase()
+                            .includes(valor)
+                            ? ""
+                            : "none";
+                });
+        }
+    );
+
+</script>
+
+</body>
+</html>

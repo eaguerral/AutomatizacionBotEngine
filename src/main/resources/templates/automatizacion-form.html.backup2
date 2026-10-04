@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Nueva automatizacion | Bot Engine</title>
+
+    <link rel="stylesheet"
+          href="/css/botengine.css">
+
+    <script src="/js/theme.js"></script>
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="container nav portal-nav">
+
+        <div class="nav-left">
+
+            <button
+                type="button"
+                class="back-nav"
+                onclick="window.location.href='/automatizaciones/admin';"
+                title="Regresar"
+                aria-label="Regresar">
+
+                <svg viewBox="0 0 24 24"
+                     aria-hidden="true">
+
+                    <path d="M15 18l-6-6 6-6"/>
+
+                </svg>
+
+            </button>
+
+            <a href="/"
+               class="brand">
+                Bot Engine
+            </a>
+
+            <span class="brand-badge">
+                Automation Portal
+            </span>
+
+        </div>
+
+    </div>
+
+</header>
+
+<main>
+
+    <section class="hero">
+
+        <div class="container hero-wrap">
+
+            <div class="hero-text">
+
+                <span class="brand-badge">
+                    Administracion
+                </span>
+
+                <h1>
+                    Nueva automatizacion
+                </h1>
+
+                <p class="lead">
+                    Registro de una prueba funcional
+                    disponible dentro del framework.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="strip"></div>
+
+    <section>
+
+        <div class="container">
+
+            <div class="user-form-panel">
+
+                <div th:if="${error != null}"
+                     class="form-error"
+                     th:text="${error}">
+                    Error
+                </div>
+
+                <form
+                    th:action="@{/automatizaciones/admin/nueva}"
+                    th:object="${automatizacionForm}"
+                    method="post"
+                    autocomplete="off">
+
+                    <div class="form-grid">
+
+                        <div class="form-field">
+
+                            <label>
+                                Codigo
+                            </label>
+
+                            <input
+                                type="text"
+                                th:field="*{codigo}"
+                                required
+                                maxlength="60"
+                                placeholder="LOGIN_CLIENTE">
+
+                            <small>
+                                Identificador unico de la automatizacion.
+                            </small>
+
+                        </div>
+
+                        <div class="form-field">
+
+                            <label>
+                                Nombre
+                            </label>
+
+                            <input
+                                type="text"
+                                th:field="*{nombre}"
+                                required
+                                maxlength="120"
+                                placeholder="Login cliente">
+
+                        </div>
+
+                        <div class="form-field">
+
+                            <label>
+                                Clase TestNG
+                            </label>
+
+                            <input
+                                type="text"
+                                th:field="*{claseTest}"
+                                required
+                                maxlength="255"
+                                placeholder="com.botengine.framework.tests.LoginTest">
+
+                            <small>
+                                Puede utilizar el paquete legado o com.botengine.framework.automatizaciones.
+                            </small>
+
+                        </div>
+
+                        <div class="form-field">
+
+                            <label>
+                                Codigo del sitio
+                            </label>
+
+                            <input
+                                type="text"
+                                th:field="*{sitioCodigo}"
+                                maxlength="80"
+                                placeholder="ZENTRAMED">
+
+                            <small>
+                                Identificador del sistema para resolver URL
+                                y credenciales desde variables de entorno.
+                            </small>
+
+                        </div>
+
+                        <div class="form-field">
+
+                            <label>
+                                Archivo XML TestNG
+                            </label>
+
+                            <input
+                                type="text"
+                                th:field="*{archivoXml}"
+                                maxlength="255"
+                                placeholder="automatizaciones/xml/zentramed/zentramed-login.xml">
+
+                            <small>
+                                Ruta relativa dentro de
+                                src/main/resources.
+                            </small>
+
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label>
+                                Descripcion
+                            </label>
+
+                            <textarea
+                                th:field="*{descripcion}"
+                                maxlength="300"
+                                rows="4"
+                                placeholder="Descripcion funcional de la prueba">
+                            </textarea>
+
+                        </div>
+
+                        <div class="form-field checkbox-field">
+
+                            <label>
+
+                                <input
+                                    type="checkbox"
+                                    th:field="*{activo}">
+
+                                Automatizacion activa
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-actions">
+
+                        <a href="/automatizaciones/admin"
+                           class="btn secondary">
+                            Cancelar
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="btn">
+
+                            Guardar automatizacion
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>

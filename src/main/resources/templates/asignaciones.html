@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Asignaciones | Bot Engine</title>
+
+    <link rel="stylesheet"
+          href="/css/botengine.css">
+
+    <script src="/js/theme.js"></script>
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="container nav portal-nav">
+
+        <div class="nav-left">
+
+            <button
+                type="button"
+                class="back-nav"
+                onclick="window.location.href='/';"
+                title="Regresar"
+                aria-label="Regresar">
+
+                <svg viewBox="0 0 24 24">
+                    <path d="M15 18l-6-6 6-6"/>
+                </svg>
+
+            </button>
+
+            <a href="/"
+               class="brand">
+                Bot Engine
+            </a>
+
+            <span class="brand-badge">
+                Automation Portal
+            </span>
+
+        </div>
+
+        <nav class="menu">
+
+            <a href="/">
+                Inicio
+            </a>
+
+            <a href="/automatizaciones">
+                Automatizaciones
+            </a>
+
+            <a href="/usuarios">
+                Usuarios
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+<main>
+
+    <section class="hero">
+
+        <div class="container hero-wrap">
+
+            <div class="hero-text">
+
+                <span class="brand-badge">
+                    Administracion
+                </span>
+
+                <h1>
+                    Asignacion de automatizaciones
+                </h1>
+
+                <p class="lead">
+                    Control de las pruebas funcionales
+                    autorizadas para cada usuario tecnico.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="strip"></div>
+
+    <section>
+
+        <div class="container">
+
+            <div class="user-form-panel">
+
+                <h2>
+                    Nueva asignacion
+                </h2>
+
+                <div th:if="${error != null}"
+                     class="form-error"
+                     th:text="${error}">
+                    Error
+                </div>
+
+                <form
+                    th:action="@{/asignaciones}"
+                    th:object="${asignacionForm}"
+                    method="post">
+
+                    <div class="form-grid">
+
+                        <div class="form-field">
+
+                            <label>
+                                Usuario autorizado
+                            </label>
+
+                            <select
+                                th:field="*{usuarioId}"
+                                required>
+
+                                <option value="">
+                                    Seleccione un usuario ADMIN o TECNICO
+                                </option>
+
+                                <option
+                                    th:each="usuario : ${usuarios}"
+                                    th:value="${usuario.id}"
+                                    th:text="${usuario.nombreCompleto + ' (' + usuario.username + ')'}">
+                                    Antonio
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="form-field">
+
+                            <label>
+                                Automatizacion
+                            </label>
+
+                            <select
+                                th:field="*{automatizacionId}"
+                                required>
+
+                                <option value="">
+                                    Seleccione una automatizacion
+                                </option>
+
+                                <option
+                                    th:each="automatizacion : ${automatizaciones}"
+                                    th:value="${automatizacion.id}"
+                                    th:text="${automatizacion.nombre + ' - ' + automatizacion.codigo}">
+                                    Login funcional base
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-actions">
+
+                        <button
+                            type="submit"
+                            class="btn">
+
+                            Asignar automatizacion
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+            <div class="users-panel"
+                 style="margin-top: 2rem;">
+
+                <div class="users-panel-header">
+
+                    <div>
+
+                        <h2>
+                            Asignaciones registradas
+                        </h2>
+
+                        <p>
+                            Relacion entre usuarios tecnicos
+                            y automatizaciones disponibles.
+                        </p>
+
+                    </div>
+
+                    <span class="brand-badge"
+                          th:text="${#lists.size(asignaciones) + ' asignacion(es)'}">
+                        0 asignaciones
+                    </span>
+
+                </div>
+
+                <div class="users-table-wrap">
+
+                    <table class="users-table">
+
+                        <thead>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Usuario</th>
+                            <th>Automatizacion</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                            <th>Acciones</th>
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        <tr th:each="asignacion : ${asignaciones}">
+
+                            <td th:text="${asignacion.id}">
+                                1
+                            </td>
+
+                            <td>
+
+                                <strong
+                                    th:text="${asignacion.usuario.nombreCompleto}">
+                                    Antonio
+                                </strong>
+
+                                <br>
+
+                                <small
+                                    th:text="${'@' + asignacion.usuario.username}">
+                                    @antonio
+                                </small>
+
+                            </td>
+
+                            <td>
+
+                                <span
+                                    th:text="${asignacion.automatizacion.nombre}">
+                                    Login funcional base
+                                </span>
+
+                                <br>
+
+                                <small
+                                    th:text="${asignacion.automatizacion.codigo}">
+                                    LOGIN_TEST
+                                </small>
+
+                            </td>
+
+                            <td>
+
+                                <span
+                                    th:class="${asignacion.activo ? 'status-pill active' : 'status-pill inactive'}"
+                                    th:text="${asignacion.activo ? 'Activa' : 'Inactiva'}">
+                                    Activa
+                                </span>
+
+                            </td>
+
+                            <td
+                                th:text="${#temporals.format(asignacion.fechaAsignacion, 'dd/MM/yyyy HH:mm')}">
+                                03/10/2026
+                            </td>
+
+                            <td>
+
+                                <form
+                                    th:if="${asignacion.activo}"
+                                    th:action="@{/asignaciones/{id}/desasignar(id=${asignacion.id})}"
+                                    method="post">
+
+                                    <button
+                                        type="submit"
+                                        class="btn secondary">
+
+                                        Desasignar
+
+                                    </button>
+
+                                </form>
+
+                                <span
+                                    th:unless="${asignacion.activo}">
+                                    Sin acceso
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                        <tr th:if="${#lists.isEmpty(asignaciones)}">
+
+                            <td colspan="6">
+                                No existen asignaciones registradas.
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Plantilla de evidencias | Bot Engine</title>
+
+    <link rel="stylesheet"
+          href="/css/botengine.css">
+
+    <script src="/js/theme.js"></script>
+
+</head>
+
+<body>
+
+<header class="header">
+
+<div class="container nav portal-nav">
+
+    <div class="nav-left">
+
+        <a href="/"
+           class="brand">
+            Bot Engine
+        </a>
+
+        <span class="brand-badge">
+            Automation Portal
+        </span>
+
+    </div>
+
+</div>
+
+</header>
+
+<main>
+
+<section class="hero">
+
+<div class="container hero-wrap">
+
+<div class="hero-text"
+     style="width:100%;">
+
+    <div class="page-action-row">
+
+        <span class="brand-badge">
+            Configuración
+        </span>
+
+        <a href="/administracion/configuracion"
+           class="page-back-link">
+            &larr; Regresar
+        </a>
+
+    </div>
+
+    <h1>
+        Plantilla de evidencias
+    </h1>
+
+    <p class="lead">
+        Administración del formato utilizado para generar
+        los informes y evidencias de las automatizaciones.
+    </p>
+
+</div>
+
+</div>
+
+</section>
+
+<div class="strip"></div>
+
+<section>
+
+<div class="container">
+
+<div th:if="${error != null}"
+     class="form-error"
+     th:text="${error}">
+</div>
+
+<div th:if="${exito != null}"
+     class="form-success"
+     th:text="${exito}">
+</div>
+
+<div class="users-panel template-manager">
+
+    <div class="template-manager-grid">
+
+        <div class="template-current-card">
+
+            <span class="brand-badge">
+                PLANTILLA ACTIVA
+            </span>
+
+            <h2>
+                Formato actual
+            </h2>
+
+            <div th:if="${existePlantilla}"
+                 class="template-current-data">
+
+                <div class="template-info-row">
+
+                    <span>Archivo</span>
+
+                    <strong th:text="${nombrePlantilla}">
+                    </strong>
+
+                </div>
+
+                <div class="template-info-row">
+
+                    <span>Formato</span>
+
+                    <strong th:text="${formatoPlantilla}">
+                    </strong>
+
+                </div>
+
+                <div class="template-info-row">
+
+                    <span>Estado</span>
+
+                    <strong class="credential-status-ok">
+                        ✓ Disponible para evidencias
+                    </strong>
+
+                </div>
+
+                <a
+                    href="/administracion/configuracion/plantilla-evidencias/descargar"
+                    class="btn secondary">
+
+                    DESCARGAR PLANTILLA ACTUAL
+
+                </a>
+
+            </div>
+
+            <div th:if="${!existePlantilla}"
+                 class="empty-state">
+
+                No existe una plantilla de evidencias cargada.
+
+            </div>
+
+        </div>
+
+        <div class="template-upload-card">
+
+            <h2>
+                Actualizar formato
+            </h2>
+
+            <p>
+                Cargue el nuevo formato oficial en Word o PDF.
+                Al completar la carga, la plantilla anterior
+                será reemplazada automáticamente.
+            </p>
+
+            <form
+                th:action="@{/administracion/configuracion/plantilla-evidencias/cargar}"
+                method="post"
+                enctype="multipart/form-data">
+
+                <input
+                    type="hidden"
+                    th:name="${_csrf.parameterName}"
+                    th:value="${_csrf.token}">
+
+                <div class="form-field">
+
+                    <label for="archivoPlantilla">
+                        Seleccionar plantilla
+                    </label>
+
+                    <input
+                        id="archivoPlantilla"
+                        name="archivo"
+                        type="file"
+                        accept=".docx,.pdf"
+                        required>
+
+                    <small>
+                        Formatos permitidos: DOCX y PDF.
+                        Tamaño máximo: 20 MB.
+                    </small>
+
+                </div>
+
+                <div class="template-warning">
+
+                    <strong>
+                        Importante
+                    </strong>
+
+                    <p>
+                        Solo puede existir una plantilla activa.
+                        La nueva carga sustituirá automáticamente
+                        el formato anterior.
+                    </p>
+
+                </div>
+
+                <div class="form-actions">
+
+                    <button
+                        type="submit"
+                        class="btn">
+
+                        CARGAR Y ACTIVAR PLANTILLA
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+</body>
+</html>

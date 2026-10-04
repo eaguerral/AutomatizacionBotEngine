@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Empresas | Bot Engine</title>
+
+    <link rel="stylesheet"
+          href="/css/botengine.css">
+
+    <script src="/js/theme.js"></script>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="container nav portal-nav">
+
+        <div class="nav-left">
+
+            <a href="/"
+               class="brand">
+                Bot Engine
+            </a>
+
+            <span class="brand-badge">
+                Automation Portal
+            </span>
+
+        </div>
+
+    </div>
+
+</header>
+
+<main>
+
+<section class="hero">
+
+    <div class="container hero-wrap">
+
+        <div class="hero-text"
+             style="width:100%;">
+
+            <div class="page-action-row">
+
+                <span class="brand-badge">
+                    Configuración
+                </span>
+
+                <a href="/administracion/configuracion"
+                   class="page-back-link">&larr; Regresar</a>
+
+            </div>
+
+            <h1>
+                Empresas
+            </h1>
+
+            <p class="lead">
+                Catálogo de empresas y aplicaciones
+                disponibles para las automatizaciones.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<div class="strip"></div>
+
+<section>
+
+<div class="container">
+
+    <div th:if="${error != null}"
+         class="form-error"
+         th:text="${error}">
+    </div>
+
+    <div class="users-panel">
+
+        <div class="module-toolbar">
+
+            <div class="module-search">
+
+                <input
+                    id="buscarEmpresa"
+                    type="search"
+                    placeholder="Buscar por código, nombre o carpeta...">
+
+            </div>
+
+            <button
+                id="btnAgregarEmpresa"
+                type="button"
+                class="btn">
+
+                + AGREGAR EMPRESA
+
+            </button>
+
+        </div>
+
+        <div id="empresaFormPanel"
+             class="module-form-panel"
+             th:classappend="${mostrarFormulario} ? ' is-open' : ''">
+
+            <h2 th:text="${empresaForm.id != null ? 'Editar empresa' : 'Nueva empresa'}">
+                Nueva empresa
+            </h2>
+
+            <form
+                th:action="@{/administracion/configuracion/empresas/guardar}"
+                th:object="${empresaForm}"
+                method="post">
+
+                <input
+                    type="hidden"
+                    th:field="*{id}">
+
+                <div class="form-grid">
+
+                    <div class="form-field">
+
+                        <label>
+                            Código
+                        </label>
+
+                        <input
+                            type="text"
+                            th:field="*{codigo}"
+                            required
+                            placeholder="EMPRESA_X">
+
+                        <small>
+                            Identificador único de la empresa.
+                        </small>
+
+                    </div>
+
+                    <div class="form-field">
+
+                        <label>
+                            Nombre
+                        </label>
+
+                        <input
+                            type="text"
+                            th:field="*{nombre}"
+                            required
+                            placeholder="Nombre de la empresa">
+
+                    </div>
+
+                    <div class="form-field">
+
+                        <label>
+                            Carpeta
+                        </label>
+
+                        <input
+                            type="text"
+                            th:field="*{carpeta}"
+                            required
+                            placeholder="empresa">
+
+                        <small>
+                            Carpeta utilizada dentro del framework.
+                        </small>
+
+                    </div>
+
+                    <div class="form-field">
+
+                        <label>
+                            Descripción
+                        </label>
+
+                        <textarea
+                            th:field="*{descripcion}"
+                            rows="4"
+                            maxlength="300"
+                            placeholder="Descripción de la empresa o aplicación">
+                        </textarea>
+
+                    </div>
+
+                </div>
+
+                <div class="form-field checkbox-field">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            th:field="*{activo}">
+
+                        Empresa activa
+
+                    </label>
+
+                </div>
+
+                <div class="form-actions">
+
+                    <a href="/administracion/configuracion/empresas"
+                       class="btn secondary">
+
+                        CANCELAR
+
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="btn">
+
+                        GUARDAR EMPRESA
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <div class="table-shell">
+
+            <table class="data-table">
+
+                <thead>
+
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Carpeta</th>
+                    <th>Estado</th>
+                    <th>Descripción</th>
+                    <th>Acciones</th>
+                </tr>
+
+                </thead>
+
+                <tbody id="tablaEmpresas">
+
+                <tr th:each="empresa : ${empresas}"
+                    th:attr="data-search=${empresa.codigo + ' ' + empresa.nombre + ' ' + empresa.carpeta}">
+
+                    <td class="mono-cell"
+                        th:text="${empresa.codigo}">
+                    </td>
+
+                    <td th:text="${empresa.nombre}">
+                    </td>
+
+                    <td class="mono-cell"
+                        th:text="${empresa.carpeta}">
+                    </td>
+
+                    <td>
+
+                        <span class="brand-badge"
+                              th:text="${empresa.activo ? 'Activa' : 'Inactiva'}">
+                        </span>
+
+                    </td>
+
+                    <td class="detail-cell">
+
+                        <span
+                            th:title="${empresa.descripcion}"
+                            th:text="${empresa.descripcion != null ? empresa.descripcion : '-'}">
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <div class="action-buttons">
+
+                            <a
+                                th:href="@{/administracion/configuracion/empresas(editar=${empresa.id})}"
+                                class="btn secondary btn-small">
+
+                                EDITAR
+
+                            </a>
+
+                            <form
+                                th:action="@{/administracion/configuracion/empresas/{id}/eliminar(id=${empresa.id})}"
+                                method="post">
+
+                                <button
+                                    type="submit"
+                                    class="btn secondary btn-small btn-danger"
+                                    onclick="return confirm('¿Desea eliminar esta empresa?');">
+
+                                    ELIMINAR
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                <tr th:if="${empresas == null or empresas.isEmpty()}">
+
+                    <td colspan="6"
+                        class="empty-state">
+
+                        No existen empresas registradas.
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+</main>
+
+<script>
+
+const panel =
+    document.getElementById(
+        "empresaFormPanel"
+    );
+
+const agregar =
+    document.getElementById(
+        "btnAgregarEmpresa"
+    );
+
+const buscador =
+    document.getElementById(
+        "buscarEmpresa"
+    );
+
+agregar.addEventListener(
+    "click",
+    function () {
+
+        panel.classList.add(
+            "is-open"
+        );
+
+        panel.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }
+);
+
+buscador.addEventListener(
+    "input",
+    function () {
+
+        const valor =
+            buscador.value
+                .toLowerCase()
+                .trim();
+
+        document
+            .querySelectorAll(
+                "#tablaEmpresas tr[data-search]"
+            )
+            .forEach(row => {
+
+                const texto =
+                    row.dataset.search
+                        .toLowerCase();
+
+                row.style.display =
+                    texto.includes(valor)
+                        ? ""
+                        : "none";
+            });
+    }
+);
+
+</script>
+
+</body>
+</html>

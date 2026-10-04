@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Ejecuciones | Bot Engine</title>
+
+    <link rel="stylesheet"
+          href="/css/botengine.css">
+
+    <script src="/js/theme.js"></script>
+
+</head>
+
+<body>
+
+<header class="header">
+
+<div class="container nav portal-nav">
+
+<div class="nav-left">
+
+    <a href="/"
+       class="brand">
+        Bot Engine
+    </a>
+
+    <span class="brand-badge">
+        Automation Portal
+    </span>
+
+</div>
+
+</div>
+
+</header>
+
+<main>
+
+<section class="hero">
+
+<div class="container hero-wrap">
+
+<div class="hero-text"
+     style="width:100%;">
+
+    <div class="page-action-row">
+
+        <span class="brand-badge">
+            Operación
+        </span>
+
+        <a href="/"
+           class="page-back-link">&larr; Regresar</a>
+
+    </div>
+
+    <h1>
+        Ejecuciones
+    </h1>
+
+    <p class="lead">
+        Seguimiento de las ejecuciones recientes
+        realizadas desde el portal.
+    </p>
+
+</div>
+
+</div>
+
+</section>
+
+<div class="strip"></div>
+
+<section>
+
+<div class="container">
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+
+        <strong th:text="${total}">
+            0
+        </strong>
+
+        Ejecuciones recientes
+
+    </div>
+
+    <div class="stat-card">
+
+        <strong th:text="${exitosas}">
+            0
+        </strong>
+
+        Exitosas
+
+    </div>
+
+    <div class="stat-card">
+
+        <strong th:text="${fallidas}">
+            0
+        </strong>
+
+        Fallidas
+
+    </div>
+
+    <div class="stat-card">
+
+        <strong th:text="${enEjecucion}">
+            0
+        </strong>
+
+        En ejecución
+
+    </div>
+
+</div>
+
+<div class="users-panel">
+
+    <div class="module-toolbar">
+
+        <div>
+
+            <h2>
+                Últimas ejecuciones
+            </h2>
+
+        </div>
+
+        <a href="/automatizaciones"
+           class="btn">
+
+            NUEVA EJECUCIÓN
+
+        </a>
+
+    </div>
+
+    <div class="module-toolbar">
+
+        <div class="module-search">
+
+            <input
+                id="buscarEjecucion"
+                type="search"
+                placeholder="Buscar automatización, usuario, estado o UUID...">
+
+        </div>
+
+    </div>
+
+    <div class="table-shell">
+
+    <table class="data-table">
+
+        <thead>
+
+        <tr>
+            <th>UUID</th>
+            <th>Automatización</th>
+            <th>Usuario</th>
+            <th>Estado</th>
+            <th>Inicio</th>
+            <th>Duración</th>
+            <th>Detalle</th>
+        </tr>
+
+        </thead>
+
+        <tbody id="tablaEjecuciones">
+
+        <tr th:each="ejecucion : ${ejecuciones}"
+            th:attr="data-search=${ejecucion.uuid + ' ' + ejecucion.automatizacion.nombre + ' ' + ejecucion.usuario.username + ' ' + ejecucion.estado}">
+
+            <td class="mono-cell nowrap">
+
+                <span
+                    th:title="${ejecucion.uuid}"
+                    th:text="${#strings.substring(ejecucion.uuid, 0, 8) + '…'}">
+                </span>
+
+            </td>
+
+            <td th:text="${ejecucion.automatizacion.nombre}">
+            </td>
+
+            <td th:text="${ejecucion.usuario.username}">
+            </td>
+
+            <td>
+
+                <span class="brand-badge"
+                      th:text="${ejecucion.estado}">
+                </span>
+
+            </td>
+
+            <td class="nowrap"
+                th:text="${ejecucion.fechaInicio != null ? #strings.substring(#strings.replace(ejecucion.fechaInicio.toString(), 'T', ' '), 0, 19) : '-'}">
+            </td>
+
+            <td class="nowrap"
+                th:text="${ejecucion.duracionMilisegundos != null ? ejecucion.duracionMilisegundos + ' ms' : '-'}">
+            </td>
+
+            <td class="detail-cell">
+
+                <span
+                    th:title="${ejecucion.detalle}"
+                    th:text="${ejecucion.detalle != null ? ejecucion.detalle : '-'}">
+                </span>
+
+            </td>
+
+        </tr>
+
+        <tr th:if="${ejecuciones == null or ejecuciones.isEmpty()}">
+
+            <td colspan="7"
+                class="empty-state">
+
+                No existen ejecuciones registradas.
+
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+    </div>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+<script>
+
+document
+    .getElementById(
+        "buscarEjecucion"
+    )
+    .addEventListener(
+        "input",
+        function (event) {
+
+            const valor =
+                event.target.value
+                    .toLowerCase();
+
+            document
+                .querySelectorAll(
+                    "#tablaEjecuciones tr[data-search]"
+                )
+                .forEach(row => {
+
+                    row.style.display =
+                        row.dataset.search
+                            .toLowerCase()
+                            .includes(valor)
+                            ? ""
+                            : "none";
+                });
+        }
+    );
+
+</script>
+
+</body>
+</html>

@@ -3405,3 +3405,1771 @@ html[data-theme="light"] .login-features div {
 
 
 /* BOTENGINE-LIGHT-FIX-FIN */
+/* Navegacion del catalogo de automatizaciones */
+.automation-nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 32px;
+}
+
+.automation-nav-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+    .automation-nav-links {
+        gap: 18px;
+        flex-wrap: wrap;
+    }
+}
+
+
+/* ==========================================================
+   BOTENGINE-MODULE-UI-V2
+   ========================================================== */
+
+.page-action-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.page-back-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 0 18px;
+    border: 1px solid rgba(130, 185, 225, .35);
+    border-radius: 10px;
+    text-decoration: none;
+    white-space: nowrap;
+    font-weight: 700;
+}
+
+.module-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.module-search {
+    flex: 1 1 360px;
+    max-width: 600px;
+}
+
+.module-search input {
+    width: 100%;
+}
+
+.module-form-panel {
+    display: none;
+    margin-bottom: 30px;
+}
+
+.module-form-panel.is-open {
+    display: block;
+}
+
+.table-shell {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 12px;
+}
+
+.data-table {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.data-table th,
+.data-table td {
+    padding: 16px 14px;
+    vertical-align: middle;
+    text-align: left;
+    border-bottom: 1px solid rgba(160, 190, 220, .12);
+}
+
+.data-table th {
+    font-size: .82rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    opacity: .72;
+    white-space: nowrap;
+}
+
+.data-table td {
+    line-height: 1.45;
+}
+
+.data-table tr:last-child td {
+    border-bottom: none;
+}
+
+.mono-cell {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: .88rem;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.detail-cell {
+    max-width: 320px;
+    min-width: 220px;
+}
+
+.detail-cell span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.btn-small {
+    min-height: 36px;
+    padding: 8px 13px;
+    font-size: .80rem;
+}
+
+.btn-danger {
+    border-color: rgba(255, 90, 110, .45);
+    color: #ff9aa9;
+    background: rgba(160, 30, 50, .10);
+}
+
+.btn-danger:hover {
+    background: rgba(160, 30, 50, .22);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 28px;
+}
+
+.stat-card {
+    min-height: 120px;
+    padding: 22px;
+    border-radius: 14px;
+    border: 1px solid rgba(150, 185, 220, .18);
+    background: rgba(24, 40, 60, .82);
+}
+
+.stat-card strong {
+    display: block;
+    font-size: 1.85rem;
+    margin-bottom: 8px;
+}
+
+.resource-lines {
+    display: grid;
+    gap: 4px;
+    min-width: 220px;
+}
+
+.resource-lines small {
+    display: block;
+    opacity: .78;
+}
+
+.route-details {
+    margin-top: 8px;
+}
+
+.route-details summary {
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.route-details div {
+    margin-top: 8px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: .78rem;
+    word-break: break-all;
+    opacity: .78;
+}
+
+.empty-state {
+    padding: 34px 20px;
+    text-align: center;
+    opacity: .78;
+}
+
+@media (max-width: 1000px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .page-action-row {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .page-back-link {
+        align-self: flex-end;
+    }
+}
+
+
+/* ==========================================================
+   BOTENGINE-UI-POLISH-V3
+   ========================================================== */
+
+/* Encabezados internos con botón Regresar a la derecha */
+.hero .hero-wrap {
+    position: relative;
+}
+
+.hero .hero-text {
+    width: 100%;
+    max-width: none;
+}
+
+.page-action-row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.page-action-row .page-back-link {
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+/* Buscadores con apariencia corporativa */
+.module-search {
+    flex: 1 1 480px;
+    max-width: 720px;
+}
+
+.module-search input[type="search"] {
+    width: 100%;
+    min-height: 46px;
+    padding: 0 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(67, 174, 230, .42);
+    background: #0c1828;
+    color: #f2f7ff;
+    font: inherit;
+    outline: none;
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
+}
+
+.module-search input[type="search"]::placeholder {
+    color: rgba(210, 225, 240, .48);
+}
+
+.module-search input[type="search"]:hover {
+    border-color: rgba(67, 174, 230, .70);
+}
+
+.module-search input[type="search"]:focus {
+    border-color: #35b9ff;
+    background: #0d1b2c;
+    box-shadow:
+        0 0 0 3px rgba(53, 185, 255, .12);
+}
+
+/* Evitar el estilo claro nativo de Chrome */
+.module-search input[type="search"]::-webkit-search-cancel-button {
+    filter: invert(1);
+    opacity: .55;
+}
+
+/* Historial usa más ancho disponible */
+.history-container {
+    max-width: 1480px !important;
+    width: calc(100% - 48px);
+}
+
+.history-panel {
+    width: 100%;
+}
+
+.history-panel .data-table {
+    min-width: 1250px;
+}
+
+/* Más aire en tablas grandes */
+.history-panel .data-table th,
+.history-panel .data-table td {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+/* Ajustes en pantallas medianas */
+@media (max-width: 900px) {
+
+    .page-action-row {
+        align-items: flex-start;
+    }
+
+    .history-container {
+        width: calc(100% - 30px);
+    }
+}
+
+
+/* ==========================================================
+   BOTENGINE-LAYOUT-FIX-V5
+   ========================================================== */
+
+.hero .hero-wrap {
+    position: relative;
+}
+
+.hero .hero-text {
+    width: 100%;
+    max-width: none;
+}
+
+.hero .page-back-link {
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    left: auto !important;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    min-height: 42px;
+    padding: 0 18px;
+
+    border: 1px solid rgba(72, 165, 220, .42);
+    border-radius: 10px;
+
+    background: rgba(10, 25, 42, .55);
+
+    text-decoration: none;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.hero .page-back-link:hover {
+    border-color: rgba(72, 185, 245, .80);
+    background: rgba(35, 100, 145, .22);
+}
+
+/* Historial */
+.history-container {
+    width: calc(100vw - 48px) !important;
+    max-width: 1560px !important;
+
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.history-container .history-panel {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+.history-container .table-shell {
+    width: 100%;
+}
+
+.history-container .data-table {
+    width: 100%;
+    min-width: 1280px;
+}
+
+.history-container .module-search {
+    max-width: 760px;
+}
+
+/* Buscadores */
+.module-search input[type="search"] {
+    width: 100%;
+    min-height: 46px;
+
+    padding: 0 16px;
+
+    border: 1px solid rgba(53, 185, 255, .45);
+    border-radius: 10px;
+
+    background: #0b1727;
+    color: #f3f7fc;
+
+    font: inherit;
+    outline: none;
+}
+
+.module-search input[type="search"]::placeholder {
+    color: rgba(215, 228, 240, .48);
+}
+
+.module-search input[type="search"]:focus {
+    border-color: #35b9ff;
+
+    box-shadow:
+        0 0 0 3px rgba(53, 185, 255, .12);
+}
+
+@media (max-width: 800px) {
+
+    .hero .page-back-link {
+        position: static !important;
+        margin-left: auto;
+    }
+
+    .history-container {
+        width: calc(100vw - 24px) !important;
+    }
+}
+
+/* ==========================================================
+   BOTENGINE-THEME-UNIFIED-V6
+   Componentes compartidos para modo claro y oscuro
+   ========================================================== */
+
+
+/* ==========================================================
+   VARIABLES MODO CLARO
+   ========================================================== */
+
+:root,
+html[data-theme="light"],
+body[data-theme="light"],
+html.light,
+body.light,
+html.theme-light,
+body.theme-light,
+html.light-mode,
+body.light-mode {
+
+    --be-surface: #ffffff;
+    --be-surface-secondary: #f5f9fd;
+
+    --be-border: #c9d9e8;
+    --be-border-strong: #9fc3df;
+
+    --be-text: #15334f;
+    --be-text-secondary: #55718b;
+    --be-muted: #71879b;
+
+    --be-input-bg: #f7fbff;
+    --be-input-text: #173652;
+    --be-placeholder: #71869a;
+
+    --be-button-bg: #f8fbfe;
+    --be-button-text: #183955;
+
+    --be-row-hover: #f3f9fd;
+
+    --be-shadow:
+        0 10px 28px rgba(25, 65, 95, .08);
+}
+
+
+/* ==========================================================
+   VARIABLES MODO OSCURO
+   ========================================================== */
+
+html[data-theme="dark"],
+body[data-theme="dark"],
+html.dark,
+body.dark,
+html.theme-dark,
+body.theme-dark,
+html.dark-mode,
+body.dark-mode {
+
+    --be-surface: #17263a;
+    --be-surface-secondary: #0d1b2c;
+
+    --be-border: rgba(142, 178, 210, .20);
+    --be-border-strong: rgba(61, 181, 245, .45);
+
+    --be-text: #f0f6fc;
+    --be-text-secondary: #c0cfdd;
+    --be-muted: #8fa4b8;
+
+    --be-input-bg: #0a1727;
+    --be-input-text: #eef6ff;
+    --be-placeholder: #72869a;
+
+    --be-button-bg: rgba(10, 25, 42, .65);
+    --be-button-text: #f0f6fc;
+
+    --be-row-hover: rgba(49, 121, 170, .09);
+
+    --be-shadow: none;
+}
+
+
+/* ==========================================================
+   COMPONENTES GENERALES
+   ========================================================== */
+
+.users-panel,
+.history-panel,
+.module-form-panel,
+.config-card {
+
+    background: var(--be-surface) !important;
+    color: var(--be-text) !important;
+
+    border-color: var(--be-border) !important;
+
+    box-shadow: var(--be-shadow);
+}
+
+
+.users-panel h1,
+.users-panel h2,
+.users-panel h3,
+.users-panel h4,
+.users-panel h5,
+
+.history-panel h1,
+.history-panel h2,
+.history-panel h3,
+.history-panel h4,
+.history-panel h5,
+
+.module-form-panel h1,
+.module-form-panel h2,
+.module-form-panel h3 {
+
+    color: var(--be-text) !important;
+}
+
+
+.users-panel p,
+.history-panel p,
+.module-form-panel p,
+.card-subtitle {
+
+    color: var(--be-text-secondary) !important;
+}
+
+
+/* ==========================================================
+   TARJETAS DE ESTADISTICAS
+   ========================================================== */
+
+.stats-grid .stat-card {
+
+    background: var(--be-surface) !important;
+
+    color: var(--be-text) !important;
+
+    border:
+        1px solid
+        var(--be-border) !important;
+
+    box-shadow: var(--be-shadow);
+
+}
+
+
+.stats-grid .stat-card strong {
+
+    color: var(--be-text) !important;
+
+}
+
+
+.stats-grid .stat-card {
+
+    color: var(--be-text-secondary) !important;
+
+}
+
+
+/* ==========================================================
+   CAMPOS DE BUSQUEDA
+   ========================================================== */
+
+.module-search {
+
+    flex: 1 1 520px;
+
+    max-width: 760px;
+
+}
+
+
+.module-search input[type="search"] {
+
+    width: 100% !important;
+
+    min-height: 46px;
+
+    padding:
+        0
+        16px;
+
+    border:
+        1px solid
+        var(--be-border-strong) !important;
+
+    border-radius: 10px;
+
+    background:
+        var(--be-input-bg) !important;
+
+    color:
+        var(--be-input-text) !important;
+
+    font: inherit;
+
+    outline: none;
+
+    transition:
+        border-color .20s ease,
+        box-shadow .20s ease,
+        background .20s ease;
+
+}
+
+
+.module-search input[type="search"]::placeholder {
+
+    color:
+        var(--be-placeholder) !important;
+
+    opacity: 1;
+
+}
+
+
+.module-search input[type="search"]:focus {
+
+    border-color:
+        #28aef0 !important;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(40, 174, 240, .12);
+
+}
+
+
+/* ==========================================================
+   TABLAS
+   ========================================================== */
+
+.data-table {
+
+    color:
+        var(--be-text) !important;
+
+}
+
+
+.data-table th {
+
+    color:
+        var(--be-text-secondary) !important;
+
+}
+
+
+.data-table td {
+
+    color:
+        var(--be-text) !important;
+
+    border-bottom-color:
+        var(--be-border) !important;
+
+}
+
+
+.data-table tbody tr:hover {
+
+    background:
+        var(--be-row-hover);
+
+}
+
+
+.mono-cell {
+
+    color:
+        var(--be-text-secondary) !important;
+
+}
+
+
+/* ==========================================================
+   BOTONES SECUNDARIOS
+   ========================================================== */
+
+.btn.secondary,
+.page-back-link {
+
+    background:
+        var(--be-button-bg) !important;
+
+    color:
+        var(--be-button-text) !important;
+
+    border-color:
+        var(--be-border-strong) !important;
+
+}
+
+
+/* ==========================================================
+   POSICION DEL BOTON REGRESAR
+   ========================================================== */
+
+/*
+   El hero completo sera ahora la referencia.
+   Antes el boton estaba tomando como referencia
+   un contenedor estrecho.
+*/
+
+.hero {
+
+    position: relative !important;
+
+}
+
+
+.hero .hero-wrap {
+
+    position: static !important;
+
+}
+
+
+.hero .page-back-link {
+
+    position: absolute !important;
+
+    top: 68px !important;
+
+    right:
+        max(
+            38px,
+            calc(
+                (100vw - 1480px) / 2
+            )
+        ) !important;
+
+    left: auto !important;
+
+    margin: 0 !important;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    min-height: 42px;
+
+    padding:
+        0
+        18px;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    z-index: 5;
+
+}
+
+
+.hero .page-back-link:hover {
+
+    border-color:
+        #28aef0 !important;
+
+}
+
+
+/* ==========================================================
+   HISTORIAL
+   ========================================================== */
+
+/*
+   El contenedor padre del historial seguia limitandolo.
+   Ahora el panel utiliza casi todo el viewport.
+*/
+
+.history-container {
+
+    max-width: none !important;
+
+    width: 100% !important;
+
+}
+
+
+.history-panel {
+
+    position: relative;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    width:
+        calc(
+            100vw - 100px
+        ) !important;
+
+    max-width:
+        1500px !important;
+
+    padding:
+        28px !important;
+
+}
+
+
+.history-panel .table-shell {
+
+    width: 100% !important;
+
+    overflow-x: auto;
+
+}
+
+
+.history-panel .data-table {
+
+    width: 100% !important;
+
+    min-width:
+        1280px !important;
+
+}
+
+
+.history-panel .module-search {
+
+    width: 100%;
+
+    max-width:
+        820px !important;
+
+}
+
+
+/* Mas espacio para detalle */
+
+.history-panel
+.data-table
+th:last-child,
+
+.history-panel
+.data-table
+td:last-child {
+
+    min-width: 260px;
+
+}
+
+
+/* ==========================================================
+   FORMULARIOS
+   ========================================================== */
+
+.module-form-panel input,
+.module-form-panel select,
+.module-form-panel textarea {
+
+    background:
+        var(--be-input-bg) !important;
+
+    color:
+        var(--be-input-text) !important;
+
+    border-color:
+        var(--be-border) !important;
+
+}
+
+
+.module-form-panel input::placeholder,
+.module-form-panel textarea::placeholder {
+
+    color:
+        var(--be-placeholder) !important;
+
+}
+
+
+/* ==========================================================
+   DETALLES DE RECURSOS
+   ========================================================== */
+
+.route-details {
+
+    color:
+        var(--be-text-secondary) !important;
+
+}
+
+
+.route-details summary {
+
+    color:
+        var(--be-text) !important;
+
+}
+
+
+/* ==========================================================
+   ESTADOS VACIOS
+   ========================================================== */
+
+.empty-state {
+
+    color:
+        var(--be-muted) !important;
+
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 900px) {
+
+    .hero .page-back-link {
+
+        right: 24px !important;
+
+    }
+
+    .history-panel {
+
+        width:
+            calc(
+                100vw - 30px
+            ) !important;
+
+        padding:
+            20px !important;
+
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .hero .page-back-link {
+
+        position: static !important;
+
+        margin:
+            20px 0 0 auto !important;
+
+    }
+
+}
+
+/* ==========================================================
+   BOTENGINE-BACK-BUTTON-V7
+   Boton Regresar alineado al extremo derecho
+   ========================================================== */
+
+.page-action-row {
+    position: relative !important;
+    width: 100% !important;
+}
+
+/*
+   El calculo permite salir del container central
+   y posicionarse respecto al viewport completo.
+*/
+.page-action-row .page-back-link {
+
+    position: absolute !important;
+
+    top: 0 !important;
+
+    right:
+        calc(
+            50% - 50vw + 48px
+        ) !important;
+
+    left: auto !important;
+
+    margin: 0 !important;
+
+    transform: none !important;
+
+    display: inline-flex !important;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 42px;
+
+    padding:
+        0
+        18px;
+
+    z-index: 20;
+}
+
+
+/* Pantallas medianas */
+@media (max-width: 1100px) {
+
+    .page-action-row .page-back-link {
+
+        right:
+            calc(
+                50% - 50vw + 28px
+            ) !important;
+
+    }
+
+}
+
+
+/* Moviles */
+@media (max-width: 700px) {
+
+    .page-action-row .page-back-link {
+
+        position: static !important;
+
+        margin:
+            12px 0 0 auto !important;
+
+    }
+
+}
+
+/* ==========================================================
+   BOTENGINE-BACK-BUTTON-V8
+   Regresar abajo a la derecha del encabezado
+   ========================================================== */
+
+/*
+   El hero completo sera la referencia del boton.
+*/
+.hero {
+    position: relative !important;
+}
+
+/*
+   El boton queda justo arriba de la linea
+   divisoria del encabezado.
+*/
+.hero .page-back-link,
+.page-action-row .page-back-link {
+
+    position: absolute !important;
+
+    top: auto !important;
+    left: auto !important;
+
+    right: 32px !important;
+    bottom: 8px !important;
+
+    margin: 0 !important;
+
+    transform: none !important;
+
+    z-index: 30 !important;
+}
+
+
+/*
+   Pantallas medianas
+*/
+@media (max-width: 1100px) {
+
+    .hero .page-back-link,
+    .page-action-row .page-back-link {
+
+        right: 22px !important;
+        bottom: 8px !important;
+
+    }
+
+}
+
+
+/*
+   Moviles
+*/
+@media (max-width: 700px) {
+
+    .hero .page-back-link,
+    .page-action-row .page-back-link {
+
+        right: 16px !important;
+        bottom: 8px !important;
+
+    }
+
+}
+
+/* ==========================================================
+   BOTENGINE-BACK-BUTTON-V10
+   Botón regresar abajo a la derecha del hero
+   ========================================================== */
+
+.hero,
+.page-hero,
+.section-hero {
+    position: relative !important;
+}
+
+.hero .page-action-row,
+.hero .page-actions,
+.hero .hero-actions,
+.hero .page-header-actions,
+.hero .page-title-actions,
+.page-hero .page-action-row,
+.page-hero .page-actions,
+.page-hero .hero-actions,
+.page-hero .page-header-actions,
+.page-hero .page-title-actions,
+.section-hero .page-action-row,
+.section-hero .page-actions,
+.section-hero .hero-actions,
+.section-hero .page-header-actions,
+.section-hero .page-title-actions {
+    position: static !important;
+}
+
+.hero .page-back-link,
+.page-hero .page-back-link,
+.section-hero .page-back-link {
+    position: absolute !important;
+    top: auto !important;
+    left: auto !important;
+    right: 28px !important;
+    bottom: 8px !important;
+    margin: 0 !important;
+    transform: none !important;
+    z-index: 60 !important;
+}
+
+@media (max-width: 1100px) {
+    .hero .page-back-link,
+    .page-hero .page-back-link,
+    .section-hero .page-back-link {
+        right: 20px !important;
+        bottom: 8px !important;
+    }
+}
+
+@media (max-width: 700px) {
+    .hero .page-back-link,
+    .page-hero .page-back-link,
+    .section-hero .page-back-link {
+        right: 14px !important;
+        bottom: 8px !important;
+    }
+}
+
+/* ==========================================================
+   BOTENGINE-BACK-BUTTON-V11
+   Posicion definitiva abajo y extremo derecho
+   ========================================================== */
+
+.hero {
+    position: relative !important;
+}
+
+/*
+   Ningun contenedor interno debe convertirse
+   en referencia del posicionamiento absoluto.
+*/
+.hero .container,
+.hero .hero-wrap,
+.hero .hero-text,
+.hero .page-action-row,
+.hero .page-actions,
+.hero .hero-actions,
+.hero .page-header-actions,
+.hero .page-title-actions {
+    position: static !important;
+}
+
+/*
+   Posicion final solicitada:
+   abajo del hero y al extremo derecho.
+*/
+body .hero .page-back-link {
+    position: absolute !important;
+
+    inset: auto 24px 10px auto !important;
+
+    top: auto !important;
+    left: auto !important;
+    right: 24px !important;
+    bottom: 10px !important;
+
+    margin: 0 !important;
+    transform: none !important;
+
+    z-index: 100 !important;
+}
+
+@media (max-width: 900px) {
+
+    body .hero .page-back-link {
+        right: 16px !important;
+        bottom: 8px !important;
+    }
+
+}
+
+/* ==========================================================
+   BOTENGINE-BACK-RIGHT-V12
+   Solo desplazamiento horizontal del boton Regresar
+   ========================================================== */
+
+body .hero .page-back-link,
+body .page-action-row .page-back-link {
+
+    left: auto !important;
+
+    right:
+        calc(
+            50% - 50vw + 26px
+        ) !important;
+
+}
+
+@media (max-width: 900px) {
+
+    body .hero .page-back-link,
+    body .page-action-row .page-back-link {
+
+        right:
+            calc(
+                50% - 50vw + 16px
+            ) !important;
+
+    }
+
+}
+
+/* ==========================================================
+   RESOURCE-DETECTION-V1
+   Recursos detectados automaticamente por empresa
+   ========================================================== */
+
+.resource-detection-panel {
+    margin-top: 28px;
+    padding: 22px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--panel-soft, rgba(255,255,255,.025));
+}
+
+.resource-detection-panel h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.resource-detection-panel > p {
+    margin-top: 0;
+    margin-bottom: 20px;
+    opacity: .78;
+}
+
+.resource-detection-panel input[readonly] {
+    cursor: default;
+    opacity: .88;
+}
+
+/* ==========================================================
+   CREDENTIAL-STATUS-V1
+   Estado visual de credenciales protegidas
+   ========================================================== */
+
+.credential-status-ok {
+    display: block;
+    margin-top: 7px;
+    font-weight: 700;
+    color: #54d6a3;
+}
+
+/* ==========================================================
+   CREDENTIAL-FORM-V2
+   Simetria de estado y control de contraseña
+   ========================================================== */
+
+.password-field-wrap {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    align-items: stretch;
+}
+
+.password-field-wrap input {
+    flex: 1;
+    min-width: 0;
+}
+
+.password-toggle-btn {
+    min-width: 92px;
+    padding: 0 14px;
+    border: 1px solid rgba(46, 180, 255, .45);
+    border-radius: 10px;
+    background: transparent;
+    color: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.password-toggle-btn:hover {
+    border-color: rgba(46, 180, 255, .9);
+    background: rgba(46, 180, 255, .08);
+}
+
+.credential-active-field {
+    justify-content: flex-start;
+}
+
+.credential-active-control {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.credential-active-control input {
+    width: 17px;
+    height: 17px;
+    margin: 0;
+}
+
+.credential-active-control span {
+    font-weight: 600;
+}
+
+/* ==========================================================
+   EVIDENCE-TEMPLATE-V1
+   Administracion de plantilla oficial de evidencias
+   ========================================================== */
+
+.template-manager {
+    max-width: 1080px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.template-manager-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    align-items: stretch;
+}
+
+.template-current-card,
+.template-upload-card {
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    min-width: 0;
+}
+
+.template-current-card h2,
+.template-upload-card h2 {
+    margin-top: 14px;
+    margin-bottom: 18px;
+}
+
+.template-upload-card > p {
+    margin-bottom: 22px;
+    opacity: .82;
+    line-height: 1.6;
+}
+
+.template-current-data {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.template-info-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.template-info-row span {
+    opacity: .72;
+}
+
+.template-info-row strong {
+    text-align: right;
+    overflow-wrap: anywhere;
+}
+
+.template-warning {
+    margin-top: 20px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.template-warning p {
+    margin: 6px 0 0;
+    opacity: .76;
+    line-height: 1.5;
+}
+
+.template-upload-card input[type="file"] {
+    width: 100%;
+}
+
+@media (max-width: 820px) {
+
+    .template-manager-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================================
+   CONFIG-GRID-V1
+   Distribucion simetrica de modulos de configuracion
+   ========================================================== */
+
+.config-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    max-width: 1080px;
+    margin: 0 auto;
+}
+
+.config-module-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 225px;
+    height: 100%;
+}
+
+.config-module-card h5 {
+    margin-bottom: 12px;
+}
+
+.config-module-card p {
+    flex: 1;
+    margin-bottom: 12px;
+    line-height: 1.55;
+}
+
+.config-module-card .card-subtitle {
+    display: block;
+    margin-bottom: 18px;
+}
+
+.config-module-card .module-button {
+    width: 100%;
+    margin-top: auto;
+    text-align: center;
+}
+
+@media (max-width: 820px) {
+
+    .config-cards-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+/* BOTENGINE-DOCUMENTACION-V1 */
+
+.execution-documentation,
+.reports-page {
+    padding-top: 30px;
+    padding-bottom: 70px;
+}
+
+.documentation-panel,
+.report-execution {
+    background: rgba(23, 37, 56, 0.88);
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.documentation-panel > summary,
+.report-execution > summary {
+    cursor: pointer;
+    padding: 20px 24px;
+    font-weight: 700;
+    list-style: none;
+}
+
+.documentation-panel > summary::-webkit-details-marker,
+.report-execution > summary::-webkit-details-marker {
+    display: none;
+}
+
+.documentation-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(320px, 1fr));
+    gap: 22px;
+    padding: 24px;
+}
+
+.documentation-item {
+    padding: 20px;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 14px;
+    background: rgba(8, 20, 36, 0.45);
+}
+
+.documentation-item h3 {
+    margin-top: 0;
+}
+
+.pdf-preview {
+    width: 100%;
+    min-height: 520px;
+    margin-top: 18px;
+    border: 0;
+    border-radius: 10px;
+    background: white;
+}
+
+.video-preview {
+    width: 100%;
+    margin-top: 18px;
+    border-radius: 10px;
+    background: black;
+}
+
+.reports-filter {
+    max-width: 760px;
+    margin-bottom: 28px;
+}
+
+.reports-list {
+    display: grid;
+    gap: 18px;
+}
+
+.report-execution > summary {
+    display: grid;
+    grid-template-columns:
+        minmax(220px, 1fr)
+        auto
+        auto;
+    gap: 18px;
+    align-items: center;
+}
+
+.report-execution-content {
+    padding: 0 24px 24px;
+}
+
+@media (max-width: 800px) {
+
+    .report-execution > summary {
+        grid-template-columns: 1fr;
+    }
+
+    .documentation-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* BOTENGINE-DOCUMENTACION-V1-FIN */
+
+
+/* ============================================================
+   BOTENGINE-DOCUMENTACION-V2
+   ============================================================ */
+
+.result-documentation-card {
+    margin-top: 26px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.result-documentation-header h3 {
+    margin: 0 0 6px;
+}
+
+.result-documentation-header p {
+    margin: 0;
+    opacity: 0.72;
+}
+
+.result-documentation-files {
+    display: grid;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.result-documentation-file {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 18px;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 14px;
+    background: rgba(8, 20, 36, 0.34);
+}
+
+.result-documentation-file > div:first-child {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.documentation-file-type {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 52px;
+    height: 32px;
+    padding: 0 10px;
+    border: 1px solid rgba(56, 189, 248, 0.42);
+    border-radius: 9px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.documentation-actions,
+.report-file-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.documentation-empty {
+    padding: 16px;
+    border-radius: 12px;
+    opacity: 0.72;
+}
+
+.documentation-card-header h3 {
+    margin: 0 0 5px;
+}
+
+.documentation-card-header p {
+    margin: 0 0 18px;
+    opacity: 0.72;
+}
+
+.report-file-actions {
+    margin-bottom: 18px;
+}
+
+.pdf-preview-wrapper {
+    width: 100%;
+    min-height: 600px;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.pdf-preview {
+    display: block;
+    width: 100%;
+    height: 600px;
+    min-height: 600px;
+    border: 0;
+    background: #ffffff;
+}
+
+.video-preview {
+    display: block;
+    width: 100%;
+    margin-top: 18px;
+    border-radius: 12px;
+    background: #000000;
+}
+
+.reports-back-actions {
+    justify-content: flex-end;
+    margin-top: 28px;
+}
+
+@media (max-width: 760px) {
+
+    .result-documentation-file {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .documentation-actions,
+    .report-file-actions {
+        width: 100%;
+    }
+
+    .documentation-actions .btn,
+    .report-file-actions .btn {
+        flex: 1;
+        text-align: center;
+    }
+
+    .pdf-preview,
+    .pdf-preview-wrapper {
+        height: 500px;
+        min-height: 500px;
+    }
+}
+
+/* BOTENGINE-DOCUMENTACION-V2-FIN */

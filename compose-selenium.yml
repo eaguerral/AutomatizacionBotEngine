@@ -1,0 +1,76 @@
+services:
+
+  selenium_chrome:
+
+    image: selenium/standalone-chrome:4.48.0-20260905
+
+    container_name: botengine_selenium_chrome
+
+    shm_size: "2gb"
+
+    ports:
+      - "4444:4444"
+      - "7900:7900"
+
+    environment:
+      SE_VNC_NO_PASSWORD: "true"
+      SE_START_VNC: "true"
+      SE_SCREEN_WIDTH: "1920"
+      SE_SCREEN_HEIGHT: "1080"
+      SE_NODE_MAX_SESSIONS: "1"
+      TZ: "America/Guatemala"
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "/opt/bin/check-grid.sh",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "4444"
+        ]
+
+      interval: 10s
+      timeout: 15s
+      retries: 10
+
+    restart: unless-stopped
+
+
+  selenium_video:
+
+    image: selenium/video:ffmpeg-8.1-20260905
+
+    container_name: botengine_selenium_video
+
+    depends_on:
+      selenium_chrome:
+        condition: service_healthy
+
+    volumes:
+      - ./storage/selenium-videos:/videos
+
+    environment:
+
+      DISPLAY_CONTAINER_NAME: selenium_chrome
+
+      # El recorder se encuentra asociado al Standalone Chrome.
+      SE_VIDEO_RECORD_STANDALONE: "true"
+
+      # El nombre se obtiene de se:name enviado desde Java.
+      SE_VIDEO_FILE_NAME: "auto"
+
+      # Nuestro UUID ya garantiza unicidad.
+      SE_VIDEO_FILE_NAME_SUFFIX: "false"
+
+      # No grabar sesiones que no lo soliciten explicitamente.
+      SE_RECORD_VIDEO: "false"
+
+      SE_FRAME_RATE: "15"
+
+      TZ: "America/Guatemala"
+
+    stop_grace_period: 30s
+
+    restart: unless-stopped
