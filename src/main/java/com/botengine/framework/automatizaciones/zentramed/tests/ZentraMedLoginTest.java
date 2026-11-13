@@ -188,9 +188,7 @@ public class ZentraMedLoginTest extends BaseTest {
              * El sistema permitio el acceso y la pantalla final
              * queda registrada como evidencia.
              */
-            login.capturarAccesoConfirmado();
-
-            EvidenciaPaso.capturar(
+EvidenciaPaso.capturar(
                     driver,
                     "Acceso confirmado",
                     "Se verificó que el sistema permitiera el acceso correctamente."

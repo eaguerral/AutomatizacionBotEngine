@@ -3,41 +3,82 @@ package com.botengine.automatizacion.service;
 import com.botengine.automatizacion.model.Empresa;
 import com.botengine.automatizacion.model.ResultadoEjecucion;
 import com.botengine.automatizacion.repository.EmpresaRepository;
+
 import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.multipdf.LayerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
+import org.apache.pdfbox.pdmodel.graphics.form.PDFormXObject;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReportePdfEjecucionService {
 
+    private static final float MARGEN_IZQUIERDO =
+            55F;
+
+    private static final float MARGEN_INFERIOR =
+            85F;
+
+    private static final float MARGEN_SUPERIOR =
+            90F;
+
+    /*
+     * Altura maxima de cada captura.
+     *
+     * Permite mostrar hasta dos evidencias completas
+     * por pagina conservando titulo y descripcion.
+     */
+    private static final float ALTURA_MAXIMA_CAPTURA =
+            200F;
+
+    private static final float ESPACIO_DESPUES_CAPTURA =
+            14F;
+
+    private static final int EVIDENCIAS_POR_PAGINA =
+            2;
+
     private final EmpresaRepository empresaRepository;
 
+    private final PlantillaEvidenciaService
+            plantillaEvidenciaService;
+
     public ReportePdfEjecucionService(
-            EmpresaRepository empresaRepository) {
+            EmpresaRepository empresaRepository,
+            PlantillaEvidenciaService plantillaEvidenciaService) {
 
         this.empresaRepository =
                 empresaRepository;
+
+        this.plantillaEvidenciaService =
+                plantillaEvidenciaService;
     }
 
     public void generar(
             ResultadoEjecucion resultado) {
 
         if (resultado == null
-                || resultado.getRutaCapturas() == null) {
+                || resultado.getRutaCapturas() == null
+                || resultado.getRutaCapturas().isBlank()) {
 
             return;
         }
+
+        PDDocument plantillaDocumento =
+                null;
 
         try {
 
@@ -51,6 +92,17 @@ public class ReportePdfEjecucionService {
             Path carpetaEjecucion =
                     carpetaCapturas.getParent();
 
+            if (carpetaEjecucion == null) {
+
+                throw new IllegalStateException(
+                        "No fue posible determinar la carpeta de la ejecucion."
+                );
+            }
+
+            Files.createDirectories(
+                    carpetaEjecucion
+            );
+
             Path destino;
 
             if (resultado.getRutaReportePdf() != null
@@ -58,7 +110,7 @@ public class ReportePdfEjecucionService {
 
                 destino =
                         Path.of(
-                                resultado.getRutaReportePdf()
+                            resultado.getRutaReportePdf()
                         )
                         .toAbsolutePath()
                         .normalize();
@@ -68,264 +120,392 @@ public class ReportePdfEjecucionService {
                 destino =
                         carpetaEjecucion.resolve(
                                 resultado.getNombreBaseReporte()
-                                + ".pdf"
+                                        + ".pdf"
                         );
             }
 
-            PDDocument documento;
+            /*
+             * Obtener plantilla PDF activa.
+             */
+            Optional<Path> plantillaActiva =
+                    plantillaEvidenciaService
+                            .obtenerPlantillaActiva();
 
-            if (Files.exists(destino)) {
+            if (plantillaActiva.isPresent()) {
 
-                documento =
-                        Loader.loadPDF(
-                                destino.toFile()
-                        );
+                Path plantilla =
+                        plantillaActiva.get();
 
-            } else {
+                String nombre =
+                        plantilla
+                                .getFileName()
+                                .toString()
+                                .toLowerCase();
 
-                documento =
-                        new PDDocument();
+                if (nombre.endsWith(".pdf")) {
+
+                    plantillaDocumento =
+                            Loader.loadPDF(
+                                    plantilla.toFile()
+                            );
+                }
             }
 
-            PDType1Font normal =
-                    new PDType1Font(
-                            Standard14Fonts.FontName.HELVETICA
-                    );
+            try (PDDocument documento =
+                         new PDDocument()) {
 
-            PDType1Font negrita =
-                    new PDType1Font(
-                            Standard14Fonts.FontName.HELVETICA_BOLD
-                    );
+                PDType1Font normal =
+                        new PDType1Font(
+                                Standard14Fonts.FontName.HELVETICA
+                        );
 
-            Pagina pagina =
-                    nuevaPagina(
-                            documento
-                    );
+                PDType1Font negrita =
+                        new PDType1Font(
+                                Standard14Fonts.FontName.HELVETICA_BOLD
+                        );
 
-            pagina =
-                    texto(
-                            documento,
-                            pagina,
-                            negrita,
-                            16,
-                            "REPORTE DE EJECUCION AUTOMATIZADA"
-                    );
+                Pagina pagina =
+                        nuevaPagina(
+                                documento,
+                                plantillaDocumento
+                        );
 
-            pagina =
-                    texto(
-                            documento,
-                            pagina,
-                            negrita,
-                            13,
-                            resultado
-                                    .getAutomatizacion()
-                                    .getNombre()
-                    );
-
-            pagina =
-                    texto(
-                            documento,
-                            pagina,
-                            negrita,
-                            13,
-                            "1. Evidencia paso a paso"
-                    );
-
-            List<Paso> pasos =
-                    leerPasos(
-                            carpetaCapturas
-                    );
-
-            for (Paso paso : pasos) {
+                /*
+                 * Encabezado principal.
+                 */
+                pagina =
+                        texto(
+                                documento,
+                                plantillaDocumento,
+                                pagina,
+                                negrita,
+                                16,
+                                "REPORTE DE EJECUCION AUTOMATIZADA"
+                        );
 
                 pagina =
                         texto(
                                 documento,
+                                plantillaDocumento,
                                 pagina,
                                 negrita,
-                                11,
-                                "Paso "
-                                + paso.numero()
-                                + ". "
-                                + paso.titulo()
+                                13,
+                                resultado
+                                        .getAutomatizacion()
+                                        .getNombre()
                         );
 
-                if (!paso.descripcion().isBlank()) {
+                pagina =
+                        texto(
+                                documento,
+                                plantillaDocumento,
+                                pagina,
+                                negrita,
+                                13,
+                                "1. Evidencia paso a paso"
+                        );
 
-                    pagina =
-                            texto(
-                                    documento,
-                                    pagina,
-                                    normal,
-                                    10,
-                                    paso.descripcion()
+                List<Paso> pasos =
+                        leerPasos(
+                                carpetaCapturas
+                        );
+
+                int evidenciasEnPagina =
+                        0;
+
+                for (Paso paso : pasos) {
+
+                    Path imagen =
+                            carpetaCapturas.resolve(
+                                    paso.archivo()
                             );
-                }
-
-                Path imagen =
-                        carpetaCapturas.resolve(
-                                paso.archivo()
-                        );
-
-                if (Files.exists(imagen)) {
 
                     PDImageXObject pdfImagen =
-                            PDImageXObject
-                                    .createFromFileByContent(
-                                            imagen.toFile(),
-                                            documento
+                            null;
+
+                    float anchoImagen =
+                            0F;
+
+                    float altoImagen =
+                            0F;
+
+                    /*
+                     * Preparar dimensiones antes de escribir
+                     * el titulo.
+                     *
+                     * De esta manera se evita dejar un titulo
+                     * al final de una pagina sin su captura.
+                     */
+                    if (Files.exists(imagen)) {
+
+                        pdfImagen =
+                                PDImageXObject
+                                        .createFromFileByContent(
+                                                imagen.toFile(),
+                                                documento
+                                        );
+
+                        float maxAncho =
+                                pagina.anchoDisponible();
+
+                        float escala =
+                                Math.min(
+                                        maxAncho
+                                                / pdfImagen.getWidth(),
+                                        ALTURA_MAXIMA_CAPTURA
+                                                / pdfImagen.getHeight()
+                                );
+
+                        anchoImagen =
+                                pdfImagen.getWidth()
+                                        * escala;
+
+                        altoImagen =
+                                pdfImagen.getHeight()
+                                        * escala;
+                    }
+
+                    List<String> descripcionLineas =
+                            paso.descripcion().isBlank()
+                                    ? List.of()
+                                    : dividir(
+                                            paso.descripcion(),
+                                            88
                                     );
 
-                    float maxAncho =
-                            500F;
+                    /*
+                     * Calcular la altura aproximada del
+                     * bloque completo:
+                     *
+                     * titulo
+                     * descripcion
+                     * captura
+                     */
+                    float alturaBloque =
+                            23F;
 
-                    float maxAlto =
-                            280F;
+                    if (!descripcionLineas.isEmpty()) {
 
-                    float escala =
-                            Math.min(
-                                    maxAncho
-                                    / pdfImagen.getWidth(),
-                                    maxAlto
-                                    / pdfImagen.getHeight()
-                            );
+                        alturaBloque +=
+                                descripcionLineas.size()
+                                        * 17F
+                                        + 5F;
+                    }
 
-                    float ancho =
-                            pdfImagen.getWidth()
-                            * escala;
+                    if (pdfImagen != null) {
 
-                    float alto =
-                            pdfImagen.getHeight()
-                            * escala;
+                        alturaBloque +=
+                                altoImagen
+                                        + ESPACIO_DESPUES_CAPTURA;
+                    }
 
-                    if (pagina.y - alto < 60F) {
+                    /*
+                     * Nueva pagina cuando:
+                     *
+                     * 1. Ya hay dos evidencias.
+                     * 2. El bloque completo no cabe.
+                     *
+                     * Esto mantiene titulo, descripcion e
+                     * imagen siempre juntos.
+                     */
+                    if (evidenciasEnPagina
+                            >= EVIDENCIAS_POR_PAGINA
+                            || pagina.y
+                            - alturaBloque
+                            < MARGEN_INFERIOR) {
 
                         pagina.cerrar();
 
                         pagina =
                                 nuevaPagina(
-                                        documento
+                                        documento,
+                                        plantillaDocumento
+                                );
+
+                        evidenciasEnPagina =
+                                0;
+                    }
+
+                    /*
+                     * Titulo del paso.
+                     */
+                    pagina =
+                            texto(
+                                    documento,
+                                    plantillaDocumento,
+                                    pagina,
+                                    negrita,
+                                    11,
+                                    "Paso "
+                                            + paso.numero()
+                                            + ". "
+                                            + paso.titulo()
+                            );
+
+                    /*
+                     * Descripcion inmediatamente debajo
+                     * del titulo.
+                     */
+                    if (!paso.descripcion().isBlank()) {
+
+                        pagina =
+                                texto(
+                                        documento,
+                                        plantillaDocumento,
+                                        pagina,
+                                        normal,
+                                        10,
+                                        paso.descripcion()
                                 );
                     }
 
-                    pagina.contenido.drawImage(
-                            pdfImagen,
-                            55F,
-                            pagina.y - alto,
-                            ancho,
-                            alto
-                    );
+                    /*
+                     * Captura inmediatamente debajo de
+                     * titulo y descripcion.
+                     */
+                    if (pdfImagen != null) {
 
-                    pagina.y -=
-                            alto
-                            + 22F;
+                        float x =
+                                (pagina.anchoPagina()
+                                        - anchoImagen)
+                                        / 2F;
+
+                        pagina.contenido.drawImage(
+                                pdfImagen,
+                                x,
+                                pagina.y - altoImagen,
+                                anchoImagen,
+                                altoImagen
+                        );
+
+                        pagina.y -=
+                                altoImagen
+                                        + ESPACIO_DESPUES_CAPTURA;
+                    }
+
+                    evidenciasEnPagina++;
                 }
-            }
 
-            if (pagina.y < 240F) {
+                /*
+                 * El resumen continúa inmediatamente
+                 * despues de la ultima evidencia.
+                 *
+                 * Si no existe espacio suficiente,
+                 * comienza una pagina nueva.
+                 */
+                if (pagina.y < 245F) {
+
+                    pagina.cerrar();
+
+                    pagina =
+                            nuevaPagina(
+                                    documento,
+                                    plantillaDocumento
+                            );
+                }
+
+                pagina =
+                        texto(
+                                documento,
+                                plantillaDocumento,
+                                pagina,
+                                negrita,
+                                13,
+                                "2. Resumen de la ejecucion"
+                        );
+
+                pagina =
+                        texto(
+                                documento,
+                                plantillaDocumento,
+                                pagina,
+                                normal,
+                                10,
+                                "Empresa: "
+                                        + obtenerEmpresa(
+                                                resultado
+                                        )
+                        );
+
+                pagina =
+                        texto(
+                                documento,
+                                plantillaDocumento,
+                                pagina,
+                                normal,
+                                10,
+                                "Automatizacion: "
+                                        + resultado
+                                                .getAutomatizacion()
+                                                .getNombre()
+                        );
+
+                pagina =
+                        texto(
+                                documento,
+                                plantillaDocumento,
+                                pagina,
+                                normal,
+                                10,
+                                "Transaccion: "
+                                        + resultado.getUuid()
+                        );
+
+                pagina =
+                        texto(
+                                documento,
+                                plantillaDocumento,
+                                pagina,
+                                normal,
+                                10,
+                                "Usuario ejecutor: "
+                                        + resultado
+                                                .getUsuario()
+                                                .getUsername()
+                        );
+
+                pagina =
+                        texto(
+                                documento,
+                                plantillaDocumento,
+                                pagina,
+                                normal,
+                                10,
+                                "Duracion: "
+                                        + resultado
+                                                .getDuracionMilisegundos()
+                                        + " ms"
+                        );
+
+                pagina =
+                        texto(
+                                documento,
+                                plantillaDocumento,
+                                pagina,
+                                negrita,
+                                13,
+                                "3. Resultado final"
+                        );
+
+                pagina =
+                        texto(
+                                documento,
+                                plantillaDocumento,
+                                pagina,
+                                negrita,
+                                11,
+                                "Resultado de la prueba: "
+                                        + resultado
+                                                .getEstado()
+                                                .name()
+                        );
 
                 pagina.cerrar();
 
-                pagina =
-                        nuevaPagina(
-                                documento
-                        );
+                documento.save(
+                        destino.toFile()
+                );
             }
-
-            pagina =
-                    texto(
-                            documento,
-                            pagina,
-                            negrita,
-                            13,
-                            "2. Resumen de la ejecucion"
-                    );
-
-            pagina =
-                    texto(
-                            documento,
-                            pagina,
-                            normal,
-                            10,
-                            "Empresa: "
-                            + obtenerEmpresa(
-                                    resultado
-                            )
-                    );
-
-            pagina =
-                    texto(
-                            documento,
-                            pagina,
-                            normal,
-                            10,
-                            "Automatizacion: "
-                            + resultado
-                                    .getAutomatizacion()
-                                    .getNombre()
-                    );
-
-            pagina =
-                    texto(
-                            documento,
-                            pagina,
-                            normal,
-                            10,
-                            "Transaccion: "
-                            + resultado.getUuid()
-                    );
-
-            pagina =
-                    texto(
-                            documento,
-                            pagina,
-                            normal,
-                            10,
-                            "Usuario ejecutor: "
-                            + resultado
-                                    .getUsuario()
-                                    .getUsername()
-                    );
-
-            pagina =
-                    texto(
-                            documento,
-                            pagina,
-                            normal,
-                            10,
-                            "Duracion: "
-                            + resultado.getDuracionMilisegundos()
-                            + " ms"
-                    );
-
-            pagina =
-                    texto(
-                            documento,
-                            pagina,
-                            negrita,
-                            13,
-                            "3. Resultado final"
-                    );
-
-            pagina =
-                    texto(
-                            documento,
-                            pagina,
-                            negrita,
-                            11,
-                            "Resultado de la prueba: "
-                            + resultado
-                                    .getEstado()
-                                    .name()
-                    );
-
-            pagina.cerrar();
-
-            documento.save(
-                    destino.toFile()
-            );
-
-            documento.close();
 
             resultado.setRutaReportePdf(
                     rutaPortable(
@@ -339,6 +519,18 @@ public class ReportePdfEjecucionService {
                     "No fue posible generar el PDF.",
                     exception
             );
+
+        } finally {
+
+            if (plantillaDocumento != null) {
+
+                try {
+
+                    plantillaDocumento.close();
+
+                } catch (Exception ignored) {
+                }
+            }
         }
     }
 
@@ -372,6 +564,7 @@ public class ReportePdfEjecucionService {
                         );
 
                 if (partes.length != 4) {
+
                     continue;
                 }
 
@@ -394,29 +587,101 @@ public class ReportePdfEjecucionService {
     }
 
     private Pagina nuevaPagina(
-            PDDocument documento)
+            PDDocument documento,
+            PDDocument plantillaDocumento)
             throws Exception {
+
+        PDRectangle tamanoPagina;
+
+        if (plantillaDocumento != null
+                && plantillaDocumento
+                        .getNumberOfPages() > 0) {
+
+            PDPage paginaPlantilla =
+                    plantillaDocumento
+                            .getPage(
+                                    0
+                            );
+
+            tamanoPagina =
+                    new PDRectangle(
+                            paginaPlantilla
+                                    .getMediaBox()
+                                    .getWidth(),
+                            paginaPlantilla
+                                    .getMediaBox()
+                                    .getHeight()
+                    );
+
+        } else {
+
+            tamanoPagina =
+                    PDRectangle.LETTER;
+        }
 
         PDPage pagina =
                 new PDPage(
-                        PDRectangle.LETTER
+                        tamanoPagina
                 );
 
         documento.addPage(
                 pagina
         );
 
-        return new Pagina(
+        if (plantillaDocumento != null
+                && plantillaDocumento
+                        .getNumberOfPages() > 0) {
+
+            LayerUtility layerUtility =
+                    new LayerUtility(
+                            documento
+                    );
+
+            PDFormXObject fondo =
+                    layerUtility
+                            .importPageAsForm(
+                                    plantillaDocumento,
+                                    0
+                            );
+
+            try (PDPageContentStream fondoStream =
+                         new PDPageContentStream(
+                                 documento,
+                                 pagina,
+                                 PDPageContentStream.AppendMode.OVERWRITE,
+                                 true,
+                                 true
+                         )) {
+
+                fondoStream.drawForm(
+                        fondo
+                );
+            }
+        }
+
+        PDPageContentStream contenido =
                 new PDPageContentStream(
                         documento,
-                        pagina
-                ),
-                740F
+                        pagina,
+                        PDPageContentStream.AppendMode.APPEND,
+                        true,
+                        true
+                );
+
+        float yInicial =
+                tamanoPagina.getHeight()
+                        - MARGEN_SUPERIOR;
+
+        return new Pagina(
+                contenido,
+                yInicial,
+                tamanoPagina.getWidth()
         );
     }
 
     private Pagina texto(
             PDDocument documento,
+            PDDocument plantillaDocumento,
             Pagina pagina,
             PDType1Font fuente,
             float tamano,
@@ -429,13 +694,15 @@ public class ReportePdfEjecucionService {
                         88
                 )) {
 
-            if (pagina.y < 60F) {
+            if (pagina.y
+                    < MARGEN_INFERIOR) {
 
                 pagina.cerrar();
 
                 pagina =
                         nuevaPagina(
-                                documento
+                                documento,
+                                plantillaDocumento
                         );
             }
 
@@ -447,7 +714,7 @@ public class ReportePdfEjecucionService {
             );
 
             pagina.contenido.newLineAtOffset(
-                    55F,
+                    MARGEN_IZQUIERDO,
                     pagina.y
             );
 
@@ -461,10 +728,11 @@ public class ReportePdfEjecucionService {
 
             pagina.y -=
                     tamano
-                    + 7F;
+                            + 7F;
         }
 
-        pagina.y -= 5F;
+        pagina.y -=
+                5F;
 
         return pagina;
     }
@@ -497,7 +765,9 @@ public class ReportePdfEjecucionService {
                     );
 
             if (corte <= 0) {
-                corte = maximo;
+
+                corte =
+                        maximo;
             }
 
             resultado.add(
@@ -526,6 +796,11 @@ public class ReportePdfEjecucionService {
 
     private String normalizarTexto(
             String texto) {
+
+        if (texto == null) {
+
+            return "";
+        }
 
         return texto
                 .replace(
@@ -604,17 +879,35 @@ public class ReportePdfEjecucionService {
     private static final class Pagina {
 
         private final PDPageContentStream contenido;
+
+        private final float anchoPagina;
+
         private float y;
 
         private Pagina(
                 PDPageContentStream contenido,
-                float y) {
+                float y,
+                float anchoPagina) {
 
             this.contenido =
                     contenido;
 
             this.y =
                     y;
+
+            this.anchoPagina =
+                    anchoPagina;
+        }
+
+        private float anchoPagina() {
+
+            return anchoPagina;
+        }
+
+        private float anchoDisponible() {
+
+            return anchoPagina
+                    - (MARGEN_IZQUIERDO * 2F);
         }
 
         private void cerrar()
